@@ -5,7 +5,8 @@ import time
 import os
 import os.path
 from selenium import webdriver
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+# from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium.webdriver.chrome.options import Options
 from glob import glob
 
 import db
@@ -24,30 +25,32 @@ def get_codes():
     return df
 
 
-def generate_fp(code):
-    fp = webdriver.FirefoxProfile()
-    # 0:デスクトップ、1:システム規定のフォルファ、2:ユーザ定義フォルダ
-    fp.set_preference("browser.download.folderList",2)
-    # 上記で2を選択したのでファイルのダウンロード場所を指定
+def generate_op(code):
     path = os.getcwd() + "/backend/data/%s" % code
     if not os.path.isdir(path):
         os.mkdir(path)
-    fp.set_preference("browser.download.dir", path)
-    # ダウンロード完了時にダウンロードマネージャウィンドウを表示するかどうかを示す真偽値。
-    fp.set_preference("browser.download.manager.showWhenStarting",False)
-    # mimeタイプを設定
-    fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream")
-    return fp
+    chrome_options = Options()
+    chrome_options.add_argument("--disable-extensions")
+    prefs = {"download.default_directory" : path}
+    chrome_options.add_experimental_option("prefs",prefs)
+    chrome_options.add_argument('--ignore-certificate-errors')     # fp = webdriver.FirefoxProfile()
+    # # 0:デスクトップ、1:システム規定のフォルファ、2:ユーザ定義フォルダ
+    # fp.set_preference("browser.download.folderList",2)
+    # # 上記で2を選択したのでファイルのダウンロード場所を指定
+    # # ダウンロード完了時にダウンロードマネージャウィンドウを表示するかどうかを示す真偽値。
+    # fp.set_preference("browser.download.manager.showWhenStarting",False)
+    # # mimeタイプを設定
+    # fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream")
+    return chrome_options
 
 
 def download(code):
     time.sleep(5)
-    fp = generate_fp(code)
-    binary = FirefoxBinary('/usr/bin/firefox')
-    binary.add_command_line_options('-headless')
-    driver = webdriver.Firefox(firefox_profile=fp,firefox_binary=binary)
+    op = generate_op(code)
+    # driver = webdriver.Firefox(firefox_profile=fp,firefox_binary=binary)
+    driver = webdriver.Chrome(chrome_options=op)
     url = base % (code,)
-    #print(url)
+    print(url)
     driver.get(url)
     for ele in driver.find_elements_by_xpath('//table[@class="resultTable table_cellspacing_1 table_border_1 mb_6"]//tr/td[7]//a'):
         time.sleep(1)
@@ -63,8 +66,8 @@ if __name__ == '__main__':
         #print(filenames)
         download(code)
         for fn in glob("backend/data/%s/*.zip" % code):
-            if fn in filenames:
-               continue
+            #if fn in filenames:
+            #   continue
             print(fn)
 #           [{"key":str, "value":str, "ishtml": boolean }]
             ds= etl.extract(fn, code)
