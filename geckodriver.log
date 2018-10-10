@@ -1,0 +1,321 @@
+1539138418196	geckodriver	INFO	geckodriver 0.18.0
+1539138418205	geckodriver	INFO	Listening on 127.0.0.1:58908
+1539138419346	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Error: no DISPLAY environment variable specified
+1539138511107	geckodriver	INFO	geckodriver 0.18.0
+1539138511110	geckodriver	INFO	Listening on 127.0.0.1:35178
+1539138512238	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Error: no DISPLAY environment variable specified
+1539138537950	geckodriver	INFO	geckodriver 0.18.0
+1539138537953	geckodriver	INFO	Listening on 127.0.0.1:36332
+1539138539074	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Error: no DISPLAY environment variable specified
+1539138679501	geckodriver	INFO	geckodriver 0.18.0
+1539138679504	geckodriver	INFO	Listening on 127.0.0.1:50738
+1539138680626	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Error: no DISPLAY environment variable specified
+1539141066647	geckodriver	INFO	geckodriver 0.18.0
+1539141066650	geckodriver	INFO	Listening on 127.0.0.1:44005
+1539141067776	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Error: no DISPLAY environment variable specified
+1539141473594	geckodriver	INFO	geckodriver 0.18.0
+1539141473597	geckodriver	INFO	Listening on 127.0.0.1:44707
+1539141474722	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Error: no DISPLAY environment variable specified
+1539142244450	geckodriver	INFO	geckodriver 0.18.0
+1539142244453	geckodriver	INFO	Listening on 127.0.0.1:43159
+1539142245580	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette", "-headless"]
+*** You are running in headless mode.
+1539142246653	Marionette	DEBUG	Received observer notification profile-after-change
+1539142247044	Marionette	DEBUG	Received observer notification command-line-startup
+1539142247044	Marionette	DEBUG	Received observer notification nsPref:changed
+1539142247044	Marionette	DEBUG	Init aborted (running=false, enabled=true, finalUIStartup=false)
+1539142247221	Marionette	DEBUG	Received observer notification toplevel-window-ready
+1539142248429	Marionette	DEBUG	Received observer notification sessionstore-windows-restored
+1539142248430	Marionette	DEBUG	Waiting for delayed startup...
+1539142248803	Marionette	DEBUG	Setting recommended pref app.normandy.api_url to 
+1539142248803	Marionette	DEBUG	Setting recommended pref app.update.disabledForTesting to true
+1539142248804	Marionette	DEBUG	Setting recommended pref security.turn_off_all_security_so_that_viruses_can_take_over_this_computer to true
+1539142248804	Marionette	DEBUG	Setting recommended pref browser.safebrowsing.passwords.enabled to false
+1539142248805	Marionette	DEBUG	Setting recommended pref toolkit.cosmeticAnimations.enabled to false
+1539142248806	Marionette	DEBUG	Setting recommended pref browser.urlbar.suggest.searches to false
+1539142248807	Marionette	DEBUG	Setting recommended pref datareporting.policy.dataSubmissionPolicyAccepted to false
+1539142248807	Marionette	DEBUG	Setting recommended pref dom.disable_beforeunload to true
+1539142248808	Marionette	DEBUG	Setting recommended pref dom.file.createInChild to true
+1539142248868	Marionette	INFO	Listening on port 37536
+1539142248868	Marionette	DEBUG	Remote service is active
+1539142248899	Marionette	DEBUG	Accepted connection 0 from 127.0.0.1:44646
+1539142248917	Marionette	TRACE	0 -> [0,1,"newSession",{"acceptInsecureCerts":true,"browserName":"firefox","capabilities":{"desiredCapabilities":{"acceptInsecureCerts":true,"browserName":"firefox"}}}]
+1539142248918	Marionette	TRACE	0 <- [1,1,{"error":"unknown command","message":"newSession","stacktrace":"WebDriverError@chrome://marionette/content/error.js:178: ... et@chrome://marionette/content/server.js:245:8\n_onJSONObjectReady/<@chrome://marionette/content/transport.js:490:9\n"},null]
+1539142248992	Marionette	DEBUG	Closed connection 0
+1539142493632	geckodriver	INFO	geckodriver 0.18.0
+1539142493647	geckodriver	INFO	Listening on 127.0.0.1:41543
+1539142494772	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Error: no DISPLAY environment variable specified
+1539143169187	geckodriver	INFO	geckodriver 0.18.0
+1539143169198	geckodriver	INFO	Listening on 127.0.0.1:46233
+1539143170332	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Error: no DISPLAY environment variable specified
+1539143277217	geckodriver	INFO	geckodriver 0.18.0
+1539143277230	geckodriver	INFO	Listening on 127.0.0.1:57122
+1539143278374	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Error: no DISPLAY environment variable specified
+1539143331506	geckodriver	INFO	geckodriver 0.18.0
+1539143331519	geckodriver	INFO	Listening on 127.0.0.1:50465
+1539143332665	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Failed to connect to Mir: Failed to connect to server socket: No such file or directory
+Unable to init server: Could not connect: Connection refused
+Error: cannot open display: :0
+1539143617804	geckodriver	INFO	geckodriver 0.18.0
+1539143617813	geckodriver	INFO	Listening on 127.0.0.1:54035
+1539143618957	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+1539143770668	Marionette	DEBUG	Received observer notification profile-after-change
+1539143771176	Marionette	DEBUG	Received observer notification command-line-startup
+1539143771180	Marionette	DEBUG	Received observer notification nsPref:changed
+1539143771180	Marionette	DEBUG	Init aborted (running=false, enabled=true, finalUIStartup=false)
+1539143778029	Marionette	DEBUG	Received observer notification toplevel-window-ready
+
+(firefox:11443): LIBDBUSMENU-GLIB-WARNING **: Unable to get session bus: Failed to execute child process "dbus-launch" (No such file or directory)
+1539143966813	geckodriver	INFO	geckodriver 0.18.0
+1539143966859	geckodriver	INFO	Listening on 127.0.0.1:44111
+1539143968364	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x300020,name=PContent::Msg_PreferenceUpdate) Channel error: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x300020,name=PContent::Msg_PreferenceUpdate) Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel error: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x190084,name=PBrowser::Msg_Destroy) Channel error: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x190084,name=PBrowser::Msg_Destroy) Channel error: cannot send/recv
+
+1539144306151	Marionette	DEBUG	Received observer notification profile-after-change
+1539144316856	Marionette	DEBUG	Received observer notification command-line-startup
+1539144317011	Marionette	DEBUG	Received observer notification nsPref:changed
+1539144317011	Marionette	DEBUG	Init aborted (running=false, enabled=true, finalUIStartup=false)
+JavaScript error: resource://gre/modules/PushServiceWebSocket.jsm, line 309: NS_ERROR_NOT_CONNECTED: Component returned failure code: 0x804b000c (NS_ERROR_NOT_CONNECTED) [nsIWebSocketChannel.sendMsg]
+JavaScript error: resource://gre/modules/PushServiceWebSocket.jsm, line 309: NS_ERROR_NOT_CONNECTED: Component returned failure code: 0x804b000c (NS_ERROR_NOT_CONNECTED) [nsIWebSocketChannel.sendMsg]
+1539144391796	Marionette	DEBUG	Received observer notification toplevel-window-ready
+JavaScript error: resource://gre/modules/PushServiceWebSocket.jsm, line 309: NS_ERROR_NOT_CONNECTED: Component returned failure code: 0x804b000c (NS_ERROR_NOT_CONNECTED) [nsIWebSocketChannel.sendMsg]
+JavaScript error: jar:file:///usr/lib/firefox/omni.ja!/components/nsPrompter.js, line 337: NS_ERROR_NOT_AVAILABLE: Cannot call openModalWindow on a hidden window
+JavaScript error: jar:file:///usr/lib/firefox/omni.ja!/components/nsPrompter.js, line 337: NS_ERROR_NOT_AVAILABLE: Cannot call openModalWindow on a hidden window
+JavaScript error: jar:file:///usr/lib/firefox/omni.ja!/components/nsPrompter.js, line 337: NS_ERROR_NOT_AVAILABLE: Cannot call openModalWindow on a hidden window
+JavaScript error: jar:file:///usr/lib/firefox/omni.ja!/components/nsPrompter.js, line 337: NS_ERROR_NOT_AVAILABLE: Cannot call openModalWindow on a hidden window
+
+(/usr/lib/firefox/firefox:11700): Gdk-WARNING **: /usr/lib/firefox/firefox: Fatal IO error 11 (Resource temporarily unavailable) on X server :10.
+
+
+(firefox:11443): Gdk-WARNING **: firefox: Fatal IO error 11 (Resource temporarily unavailable) on X server :10.
+
+
+(firefox:11760): Gdk-WARNING **: firefox: Fatal IO error 11 (Resource temporarily unavailable) on X server :10.
+
+
+(/usr/lib/firefox/firefox:11911): Gdk-WARNING **: /usr/lib/firefox/firefox: Fatal IO error 11 (Resource temporarily unavailable) on X server :10.
+
+1539145071220	geckodriver	INFO	geckodriver 0.18.0
+1539145071229	geckodriver	INFO	Listening on 127.0.0.1:40507
+1539145072362	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+Failed to connect to Mir: Failed to connect to server socket: No such file or directory
+Unable to init server: Could not connect: Connection refused
+Error: cannot open display: :10
