@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://disclosure.edinet-fsa.go.jp/2013/manifest">
+<tocComposition>
+<title xml:lang="ja">提出本文書</title>
+<title xml:lang="en">Main Document</title>
+<item in="presentation" ref="jpsps070300" extrole="http://disclosure.edinet-fsa.go.jp/role/jpsps/rol_CabinetOfficeOrdinanceOnDisclosureOfInformationEtcOnSpecifiedSecuritiesFormNo73AnnualSecuritiesReport" />
+</tocComposition>
+<list>
+<instance id="jpsps070300" type="PublicDoc" preferredFilename="jpsps070300-asr-001_G04956-000_2014-12-31_03_2015-04-23.xbrl">
+<ixbrl>0000000_header_jpsps070300-asr-001_G04956-000_2014-12-31_03_2015-04-23_ixbrl.htm</ixbrl>
+<ixbrl>0101010_honbun_jpsps070300-asr-001_G04956-000_2014-12-31_03_2015-04-23_ixbrl.htm</ixbrl>
+<ixbrl>0201010_honbun_jpsps070300-asr-001_G04956-000_2014-12-31_03_2015-04-23_ixbrl.htm</ixbrl>
+<ixbrl>0205010_honbun_jpsps070300-asr-001_G04956-000_2014-12-31_03_2015-04-23_ixbrl.htm</ixbrl>
+<ixbrl>0205020_honbun_jpsps070300-asr-001_G04956-000_2014-12-31_03_2015-04-23_ixbrl.htm</ixbrl>
+<ixbrl>0206010_honbun_jpsps070300-asr-001_G04956-000_2014-12-31_03_2015-04-23_ixbrl.htm</ixbrl>
+</instance>
+</list>
+</manifest>
