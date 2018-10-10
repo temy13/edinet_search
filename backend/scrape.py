@@ -35,7 +35,7 @@ def generate_op(code):
     options = Options()
     options.binary_location = '/usr/bin/google-chrome'
     options.add_argument('--headless')
-    options.add_argument('--window-size=1280,1024')
+    #options.add_argument('--window-size=1280,1024')
     #chrome_options.add_argument("--disable-extensions")
     prefs = {"download.default_directory" : path}
     options.add_experimental_option("prefs",prefs)
@@ -58,10 +58,11 @@ def download(code):
     url = base % (code,)
     print(url)
     driver.get(url)
+    time.sleep(2) 
     driver.save_screenshot(os.getcwd() + '/screenshot1.png')
-    element = WebDriverWait(driver, 10).until(
-      EC.presence_of_element_located((By.CLASS_NAME, "resultTable"))
-    )
+    #element = WebDriverWait(driver, 10).until(
+    #  EC.presence_of_element_located((By.CLASS_NAME, "resultTable"))
+    #)
     driver.save_screenshot(os.getcwd() + '/screenshot2.png')
     for ele in driver.find_elements_by_xpath('//table[@class="resultTable table_cellspacing_1 table_border_1 mb_6"]//tr/td[7]//a'):
         #time.sleep(1)
