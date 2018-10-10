@@ -5,6 +5,7 @@ import time
 import os
 import os.path
 from selenium import webdriver
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from glob import glob
 
 import db
@@ -42,7 +43,9 @@ def generate_fp(code):
 def download(code):
     time.sleep(5)
     fp = generate_fp(code)
-    driver = webdriver.Firefox(firefox_profile=fp)
+    binary = FirefoxBinary('/usr/bin/firefox')
+    binary.add_command_line_options('-headless')
+    driver = webdriver.Firefox(firefox_profile=fp,firefox_binary=binary)
     url = base % (code,)
     #print(url)
     driver.get(url)
