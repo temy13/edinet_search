@@ -66,8 +66,8 @@ if __name__ == '__main__':
         #print(filenames)
         download(code)
         for fn in glob("backend/data/%s/*.zip" % code):
-            #if fn in filenames:
-            #   continue
+            if fn in filenames:
+               continue
             print(fn)
 #           [{"key":str, "value":str, "ishtml": boolean }]
             ds= etl.extract(fn, code)
