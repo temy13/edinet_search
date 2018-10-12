@@ -17,17 +17,18 @@ url = "https://disclosure.edinet-fsa.go.jp/E01EW/BLMainController.jsp?uji.verb=W
 driver.get(url)
 time.sleep(10)
 driver.save_screenshot('search_results.png')
+print(driver.title)
 
 url = "https://www.google.co.jp/"
 driver.get(url)
 time.sleep(10)
 driver.save_screenshot('search_results2.png')
-
+print(driver.title)
 url = "https://disclosure.edinet-fsa.go.jp/"
 driver.get(url)
 time.sleep(10)
 driver.save_screenshot('search_results3.png')
-
+print(driver.title) 
 
 # driver.get('https://www.google.co.jp/')
 
