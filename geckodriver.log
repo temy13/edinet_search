@@ -319,3 +319,13 @@ JavaScript error: jar:file:///usr/lib/firefox/omni.ja!/components/nsPrompter.js,
 Failed to connect to Mir: Failed to connect to server socket: No such file or directory
 Unable to init server: Could not connect: Connection refused
 Error: cannot open display: :10
+1539316856861	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.6nVargfsdccj"
+*** You are running in headless mode.
+1539316858784	Marionette	INFO	Listening on port 40201
+1539316858879	Marionette	WARN	TLS certificate errors will be ignored for this session
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+1539316876802	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.OV8DntZmBaZz"
+*** You are running in headless mode.
+1539316878781	Marionette	INFO	Listening on port 39382
+1539316878841	Marionette	WARN	TLS certificate errors will be ignored for this session
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
