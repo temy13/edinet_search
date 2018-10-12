@@ -16,7 +16,7 @@ import db
 import etl
 
 
-base = "https://disclosure.edinet-fsa.go.jp/E01EW/BLMainController.jsp?uji.verb=W1E63010CXW1E6A010DSPSch&uji.bean=ee.bean.parent.EECommonSearchBean&TID=W1E63011&PID=W1E63010&SESSIONKEY=1538717569222&lgKbn=2&pkbn=0&skbn=0&dskb=&dflg=0&iflg=0&preId=1&row=100&idx=0&syoruiKanriNo=&mul=%s&fls=on&cal=1&era=H&yer=&mon=&pfs=5"
+base = "http://disclosure.edinet-fsa.go.jp/E01EW/BLMainController.jsp?uji.verb=W1E63010CXW1E6A010DSPSch&uji.bean=ee.bean.parent.EECommonSearchBean&TID=W1E63011&PID=W1E63010&SESSIONKEY=1538717569222&lgKbn=2&pkbn=0&skbn=0&dskb=&dflg=0&iflg=0&preId=1&row=100&idx=0&syoruiKanriNo=&mul=%s&fls=on&cal=1&era=H&yer=&mon=&pfs=5"
 
 # def get_soup(url):
 #     resp = requests.get(url)
@@ -41,7 +41,7 @@ def generate_op(code):
 
 
 def download(code):
-    #time.sleep(5)
+    time.sleep(5)
     options = generate_op(code)
     # driver = webdriver.Firefox(firefox_profile=fp,firefox_binary=binary)
     driver = webdriver.Chrome(chrome_options=options)
@@ -49,24 +49,19 @@ def download(code):
     print(url)
     driver.get(url)
     time.sleep(2)
-    driver.save_screenshot(os.getcwd() + '/screenshot1.png')
     for ele in driver.find_elements_by_xpath('//table[@class="resultTable table_cellspacing_1 table_border_1 mb_6"]//tr/td[7]//a'):
         #time.sleep(1)
-        print(ele)
         ele.click()
-    driver.get('https://www.google.co.jp/')
-    driver.save_screenshot(os.getcwd() + '/screenshot2.png')
     driver.quit()
 
 
 if __name__ == '__main__':
     df = get_codes()
-    for index, item in df[:1].iterrows():
+    for index, item in df.iterrows():
         code = item["code"]
         filenames = db.get_filenames(code)
         #print(filenames)
         download(code)
-        sys.exit()
         for fn in glob("backend/data/%s/*.zip" % code):
             if fn in filenames:
                continue
