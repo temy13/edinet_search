@@ -18,7 +18,7 @@ driver.get(url)
 time.sleep(10)
 driver.save_screenshot('search_results.png')
 
-url = "'https://www.google.co.jp/'"
+url = "https://www.google.co.jp/"
 driver.get(url)
 time.sleep(10)
 driver.save_screenshot('search_results2.png')
