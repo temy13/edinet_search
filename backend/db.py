@@ -1,3 +1,4 @@
+# coding=utf-8
 import os
 import psycopg2
 from os.path import join, dirname
@@ -21,9 +22,13 @@ def get_filenames(code):
             return [row[0] for row in rows]
 
 def insert_item(code, filename, key, value, ishtml):
+    #print(type(code), type(filename), type(value), type(ishtml))
+    print(code,filename, key, str(value), ishtml, type(str(value)))
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('INSERT INTO items (code, filename, key, value, ishtml) VALUES (%s,%s,%s,%s,%s)', (code, filename, key, value, ishtml))
+            sql = """INSERT INTO items (code, filename, key, value, ishtml) VALUES ('%s', '%s', '%s', '%s', %s)""" % (code, filename, key, str(value), ishtml)
+            print(sql)
+            cur.execute(sql)
         conn.commit()
 
 def insert_fn(code, filename):
