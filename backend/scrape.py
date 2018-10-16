@@ -15,10 +15,6 @@ from glob import glob
 
 import db
 import etl
-import sys
-print(sys.getdefaultencoding())
-print(sys.stdout.encoding)
-print("INSERT INTO items (code, filename, key, value, ishtml) VALUES (%s,%s,%s,%s,%s)" % ("アア", "有価証券報告書", "key", "str(value)", "ishtm"))
 base = "https://disclosure.edinet-fsa.go.jp/E01EW/BLMainController.jsp?uji.verb=W1E63010CXW1E6A010DSPSch&uji.bean=ee.bean.parent.EECommonSearchBean&TID=W1E63011&PID=W1E63010&SESSIONKEY=1538717569222&lgKbn=2&pkbn=0&skbn=0&dskb=&dflg=0&iflg=0&preId=1&row=100&idx=0&syoruiKanriNo=&mul=%s&fls=on&cal=1&era=H&yer=&mon=&pfs=5"
 
 # def get_soup(url):
