@@ -26,15 +26,16 @@ def extract_dir(dir, ds):
         ext = path.split(".")[-1]
         if not ext == "xbrl":
             continue
-        print(path)
         xbrl = parser.parse_file(path)
         for key in xbrl.get_keys():
-            print("key", key)
             for v in xbrl.get_data_list(key):
                 s = v.get_value()
                 if not s:
                     continue
-                ds.append({"key":key, "value":s, "ishtml": s.startswith("<") and s.endswith(">")})
+                tris = s.replace("\n", "")
+                ds.append({"key":key, "value":s, "ishtml": (tris.startswith("<") and tris.endswith(">")) or (tris.startswith("&lt;") and tris.endswith("&gt;") ) })
+                if ds[-1]["ishtml"]:
+                    print(tris)
                 # if not s:
                 #     continue
                 # s = s.replace("\n", "")

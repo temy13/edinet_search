@@ -19,6 +19,13 @@ LIMIT=10
 def get_items(query, offset=0):
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('SELECT code, value FROM items where value LIKE %s limit %s', ("%" + query + "%", LIMIT))
+            cur.execute('SELECT value, filename, ishtml FROM items where ishtml = true AND value LIKE %s limit %s', ("%" + query + "%", LIMIT))
             rows = cur.fetchall()
-            return [{"code":row[0],"value":row[1]} for row in rows]
+            return [{"value":row[0], "filename":row[1], "ishtml":row[2]} for row in rows]
+
+def get_meta(filename):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('SELECT publisher, term, term_from, term_to FROM meta where filename =  %s', (filename,))
+            rows = cur.fetchall()
+            return [{"publisher":row[0], "term":row[1], "term_from":row[2], "term_to":row[3]} for row in rows]
