@@ -34,8 +34,8 @@ def extract_dir(dir, ds):
                     continue
                 tris = s.replace("\n", "")
                 ds.append({"key":key, "value":s, "ishtml": (tris.startswith("<") and tris.endswith(">")) or (tris.startswith("&lt;") and tris.endswith("&gt;") ) })
-                if ds[-1]["ishtml"]:
-                    print(tris)
+                #if ds[-1]["ishtml"]:
+                #    print(tris)
                 # if not s:
                 #     continue
                 # s = s.replace("\n", "")

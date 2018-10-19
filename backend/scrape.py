@@ -63,12 +63,12 @@ def download(code):
 
 if __name__ == '__main__':
     df = get_codes()
-    for index, item in df[:1].iterrows():
+    for index, item in df.iterrows():
         code = item["code"]
         print(code)
         filenames = db.get_filenames(code)
         #download(code)
-        for fn in glob("backend/data/%s/*.zip" % code)[:1]:
+        for fn in glob("backend/data/%s/*.zip" % code):
             # if fn in filenames:
             #    continue
 #           [{"key":str, "value":str, "ishtml": boolean }]

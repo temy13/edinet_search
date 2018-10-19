@@ -24,9 +24,10 @@ def get_filenames(code):
 def insert_item(code, filename, key, value, ishtml):
     #print(type(code), type(filename), type(value), type(ishtml))
     #print(code,filename, key, str(value), ishtml, type(str(value)))
+    v = str(value).replace("'","\'")
     with get_connection() as conn:
         with conn.cursor() as cur:
-            sql = """INSERT INTO items (code, filename, key, value, ishtml) VALUES ('%s', '%s', '%s', '%s', %s)""" % (code, filename, key, str(value), ishtml)
+            sql = """INSERT INTO items (code, filename, key, value, ishtml) VALUES ('%s', '%s', '%s', '%s', %s)""" % (code, filename, key, v, ishtml)
             #print(sql)
             cur.execute(sql)
         conn.commit()
@@ -52,7 +53,8 @@ def get_items(key, filename):
 
 
 def insert_meta(filename, publisher, term, term_from, term_to):
+    p = publisher.replace("'","\'")
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES (%s,%s,%s,%s,%s)', (filename, publisher, term, term_from, term_to))
+            cur.execute('INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES (%s,%s,%s,%s,%s)', (filename, p, term, term_from, term_to))
         conn.commit()

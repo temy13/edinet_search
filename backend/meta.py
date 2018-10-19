@@ -9,7 +9,11 @@ h_digit = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 zh_digit = {z:h for z, h in zip(z_digit, h_digit)}
 
 def h_convert(s):
-    return str(1988 + int(re.sub(r'\D','',s)))
+    i = int(re.sub(r'\D','',s))
+    if i <= 30:
+      return str(1988 + int(re.sub(r'\D','',s)))
+    else:
+      return i
 
 def convert(s):
     #s = s.replace("平成","")
