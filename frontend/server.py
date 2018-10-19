@@ -23,10 +23,11 @@ def search(query):
         d["term_from"] = dt_convert(d["term_from"])
         d["term_to"] = dt_convert(d["term_to"])
 
-
         pos = content.find(query)
         s = pos - 300 if pos > 300 else 0
         d["value"] = content[s:s+600]
+        if len(content) > 600:
+            d["value"] += "..."
     return data
 
 
