@@ -31,8 +31,12 @@ def convert(s):
 def save_meta(fn):
     try:
         publishers = db.get_items(filename=fn, key="jpsps_cor:IssuerNameCoverPage".lower())
+        if not publishers:
+          print(fn) 
         publisher = publishers[0]
         t = db.get_items(filename=fn, key="jpsps_cor:AccountingPeriodCoverPage".lower())
+        if not t:
+          print(fn) 
         t = t[0]
         term = t.split("（")[0]
         term_from = convert(t.split("　")[1])

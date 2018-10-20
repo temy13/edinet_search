@@ -13,6 +13,7 @@
             <input name="query" type="text" placeholder="" value="{{query}}" id="query">
             <button type="submit">検索</button>
         </form>
+ 	<div>{{ count }} 件見つかりました</div>
         {% for d in data %}
           <div>
             <div class="item-header">{{ d["publisher"] }} {{ d["term"] }} ({{ d["term_from"] }} ~ {{ d["term_to"] }})</div>
