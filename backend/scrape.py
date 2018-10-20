@@ -67,10 +67,10 @@ if __name__ == '__main__':
         code = item["code"]
         print(code)
         filenames = db.get_filenames(code)
-        #download(code)
+        download(code)
         for fn in glob("backend/data/%s/*.zip" % code):
-            # if fn in filenames:
-            #    continue
+            if fn in filenames:
+               continue
 #           [{"key":str, "value":str, "ishtml": boolean }]
             ds= etl.extract(fn, code)
             db.save_items(fn, code, ds)

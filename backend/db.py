@@ -3,7 +3,7 @@ import os
 import psycopg2
 from os.path import join, dirname
 from dotenv import load_dotenv
-
+import traceback
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
@@ -24,13 +24,17 @@ def get_filenames(code):
 def insert_item(code, filename, key, value, ishtml):
     #print(type(code), type(filename), type(value), type(ishtml))
     #print(code,filename, key, str(value), ishtml, type(str(value)))
-    v = str(value).replace("'","\'")
-    with get_connection() as conn:
-        with conn.cursor() as cur:
-            sql = """INSERT INTO items (code, filename, key, value, ishtml) VALUES ('%s', '%s', '%s', '%s', %s)""" % (code, filename, key, v, ishtml)
-            #print(sql)
-            cur.execute(sql)
-        conn.commit()
+    try:
+        #v = str(value).replace("'","\'")
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                #sql = """INSERT INTO items (code, filename, key, value, ishtml) VALUES ('%s', '%s', '%s', '%s', %s)""" % (code, filename, key, v, ishtml)
+                #cur.execute(sql)
+                cur.execute('INSERT INTO items (code, filename, key, value, ishtml) VALUES (%s, %s, %s, %s, %s)', (code, filename, key, value, ishtml))
+            conn.commit()
+    except:
+        print(filename)
+        print(traceback.format_exc())
 
 def insert_fn(code, filename):
     with get_connection() as conn:

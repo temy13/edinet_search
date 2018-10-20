@@ -23,9 +23,7 @@ def convert(s):
     s = s.replace("月","/")
     for z in z_digit:
         s = s.replace(z, zh_digit[z])
-    print(s)
     ss = s.split("/")
-    print(ss)
 
     return "%s/%s/%s" % (h_convert(ss[0]), ss[1], ss[2])
 
@@ -39,11 +37,9 @@ def save_meta(fn):
         term = t.split("（")[0]
         term_from = convert(t.split("　")[1])
         term_to = convert(t.split("　")[3])
-        print(term)
-        print(term_from)
-        print(term_to)
         db.insert_meta(fn, publisher, term, term_from, term_to)
     except:
+        print(fn)
         print(traceback.format_exc())
 
 def get_codes():
