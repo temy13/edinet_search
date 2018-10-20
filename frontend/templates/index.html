@@ -9,17 +9,36 @@
 
   <body>
       <div id="app" class="container">
-        <form action="/" method="post">
+        <form action="/" method="get">
             <input name="query" type="text" placeholder="" value="{{query}}" id="query">
             <button type="submit">検索</button>
         </form>
- 	<div>{{ count }} 件見つかりました</div>
+ 	      <div>
+            <span id="count">{{ count }}</span> 件見つかりました
+            {% if count > 0 %}
+              <div>{{int(offset)+1}} ~ {{int(offset) + len(data)}} 件を表示しています</div>
+            {% end %}
+        </div>
         {% for d in data %}
           <div>
             <div class="item-header">{{ d["publisher"] }} {{ d["term"] }} ({{ d["term_from"] }} ~ {{ d["term_to"] }})</div>
             <div class="content border border-dark rounded ">{{ d["value"] }}</div>
           </div>
         {% end %}
+
+        <div class="text-center mx-auto">
+          <ul class="pagination">
+            {% for i in range(0, count, 10) %}
+              <li class="page-item">
+                {% if i == int(offset) %}
+                  <a class="page-link">{{ int((i/10) + 1) }}</a>
+                {% else %}
+                  <a class="page-link" href="/?query={{query}}&offset={{i}}">{{ int((i/10) + 1) }}</a>
+                {% end %}
+              </li>
+            {% end %}
+          </ul>
+        </div>
       </div>
 
    </body>

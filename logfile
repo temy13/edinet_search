@@ -1,0 +1,25 @@
+2018-10-20 19:16:44.250 JST [2287] LOG:  listening on IPv6 address "::1", port 5432
+2018-10-20 19:16:44.250 JST [2287] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2018-10-20 19:16:44.251 JST [2287] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2018-10-20 19:16:44.328 JST [2314] LOG:  database system was shut down at 2018-10-20 19:08:56 JST
+2018-10-20 19:16:44.342 JST [2287] LOG:  database system is ready to accept connections
+2018-10-20 19:30:40.895 JST [22930] ERROR:  relation "meta" does not exist at character 13
+2018-10-20 19:30:40.895 JST [22930] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_192926.zip','ジャパンエクセレント投資法人','第16期','2014/1/1','2014/6/30')
+2018-10-20 19:30:46.228 JST [23557] ERROR:  relation "meta" does not exist at character 13
+2018-10-20 19:30:46.228 JST [23557] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_192933.zip','ジャパンエクセレント投資法人','第15期','2013/7/1','2013/12/31')
+2018-10-20 19:30:51.614 JST [24188] ERROR:  relation "meta" does not exist at character 13
+2018-10-20 19:30:51.614 JST [24188] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_192843.zip','ジャパンエクセレント投資法人','第20期','2016/1/1','2016/6/30')
+2018-10-20 19:30:56.766 JST [24812] ERROR:  relation "meta" does not exist at character 13
+2018-10-20 19:30:56.766 JST [24812] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_193023.zip','ジャパンエクセレント投資法人','第15期','2013/7/1','2013/12/31')
+2018-10-20 19:31:02.019 JST [25432] ERROR:  relation "meta" does not exist at character 13
+2018-10-20 19:31:02.019 JST [25432] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_192908.zip','ジャパンエクセレント投資法人','第16期','2014/1/1','2014/6/30')
+2018-10-20 19:31:07.171 JST [26046] ERROR:  relation "meta" does not exist at character 13
+2018-10-20 19:31:07.171 JST [26046] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_192920.zip','ジャパンエクセレント投資法人','第17期','2014/7/1','2014/12/31')
+2018-10-20 19:31:12.400 JST [26659] ERROR:  relation "meta" does not exist at character 13
+2018-10-20 19:31:12.400 JST [26659] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_192855.zip','ジャパンエクセレント投資法人','第18期','2015/1/1','2015/6/30')
+2018-10-20 19:31:17.170 JST [27272] ERROR:  relation "meta" does not exist at character 13
+2018-10-20 19:31:17.170 JST [27272] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_192951.zip','ジャパンエクセレント投資法人','第17期','2014/7/1','2014/12/31')
+2018-10-20 19:31:22.473 JST [27885] ERROR:  relation "meta" does not exist at character 13
+2018-10-20 19:31:22.473 JST [27885] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_192945.zip','ジャパンエクセレント投資法人','第17期','2014/7/1','2014/12/31')
+2018-10-20 19:51:20.227 JST [47816] ERROR:  relation "itmes" does not exist at character 16
+2018-10-20 19:51:20.227 JST [47816] STATEMENT:  select id from itmes where ishtml = true order by id limit 2 offset 0;
