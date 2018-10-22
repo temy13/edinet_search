@@ -29,3 +29,7 @@ ul{
 li{
   float:left;
 }
+
+.fg{
+    position: relative;
+}

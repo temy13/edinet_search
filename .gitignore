@@ -4,3 +4,4 @@ __pycache__
 !/backend/data/.keep
 *.log
 logfile
+.DS_Store

@@ -9,7 +9,6 @@ function replacer( str, word , att  ) {
 // ▼③ハイライトを加える処理
 function addhighlight() {
     $(".content").each(function(index, ele){
-      console.log(ele);
       var backupOriginal = $(ele).html();
       var forShow = backupOriginal;
       q = $("#query").val()

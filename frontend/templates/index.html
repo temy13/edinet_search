@@ -1,6 +1,7 @@
 <html>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
@@ -9,10 +10,41 @@
 
   <body>
       <div id="app" class="container">
-        <form action="/" method="get">
-            <input name="query" type="text" placeholder="" value="{{query}}" id="query">
-            <button type="submit">検索</button>
-        </form>
+        <div class="form-group">
+          <form action="/" method="get">
+              <input name="query" type="text" placeholder="" value="{{query}}" id="query">
+              <button type="submit">検索</button>
+
+              <div class="row">
+                <div class="cols-6">
+                  決済期
+                </div>
+              </div>
+              <div class="row">
+                <div class="cols-6">
+                  <input name="t_from_year" type="number" placeholder="" value="{{t_from_year}}" min=1990 max=2020>年
+                  <input name="t_from_month" type="number" placeholder="" value="{{t_from_month}}" min=1 max=12>月期　から
+                </div>
+              </div>
+              <div class="row">
+                <div class="cols-6">
+                  <input name="t_to_year" type="number" placeholder="" value="{{t_to_year}}" min=1990 max=2020>年
+                  <input name="t_to_month" type="number" placeholder="" value="{{t_to_month}}" min=1 max=12>月期　まで
+                </div>
+              </div>
+              <div class="row">
+                <div class="cols-6">
+                  文字数
+                </div>
+              </div>
+              <div class="row">
+                <div class="cols-6">
+                  前後<input name="length" type="number" placeholder="" value="{{length}}" min=10>文字
+                </div>
+              </div>
+
+          </form>
+        </div>
  	      <div>
             {% if query != "" %}
               <span id="count">{{ count }}</span> 件見つかりました

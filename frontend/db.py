@@ -16,7 +16,9 @@ def get_connection():
 
 LIMIT=10
 
-def get_items(query, t_from="1980/01/01", t_to="2030/12/31", offset=0):
+def get_items(query, t_from="", t_to="", offset=0):
+    t_from = "1980/01/01" if not t_from else t_from
+    t_to = "2030/12/31" if not t_to else t_to
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("""
@@ -25,17 +27,17 @@ def get_items(query, t_from="1980/01/01", t_to="2030/12/31", offset=0):
                     items.ishtml = true AND
                     items.value LIKE %s AND
                     meta.term_from >= %s AND
-                    meta.term_to <= %s AND
+                    meta.term_to <= %s
                 """, ("%" + query + "%", t_from, t_to))
             count = cur.fetchone()
             cur.execute("""
-                SELECT value, filename, ishtml,key  FROM items LEFT JOIN meta ON items.filename = meta.filename
+                SELECT items.value, items.filename, items.ishtml, items.key FROM items LEFT JOIN meta ON items.filename = meta.filename
                 WHERE
                     items.ishtml = true AND
                     items.value LIKE %s AND
                     meta.term_from >= %s AND
-                    meta.term_to <= %s AND
-                ORDER BY id
+                    meta.term_to <= %s
+                ORDER BY items.id
                 LIMIT %s
                 OFFSET %s
             """, ("%" + query + "%", t_from, t_to, LIMIT, offset))
