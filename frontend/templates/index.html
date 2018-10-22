@@ -14,7 +14,9 @@
             <button type="submit">検索</button>
         </form>
  	      <div>
-            <span id="count">{{ count }}</span> 件見つかりました
+            {% if query != "" %}
+              <span id="count">{{ count }}</span> 件見つかりました
+            {% end %}
             {% if count > 0 %}
               <div>{{int(offset)+1}} ~ {{int(offset) + len(data)}} 件を表示しています</div>
             {% end %}
