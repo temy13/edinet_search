@@ -75,10 +75,10 @@ class MainHandler(tornado.web.RequestHandler):
                 data=data,
                 query=query,
                 offset=int(offset),
-                t_from_month=int(t_from_month),
-                t_to_month=int(t_to_month),
-                t_from_year=int(t_from_year),
-                t_to_year=int(t_to_year),
+                t_from_month=t_from_month,
+                t_to_month=t_to_month,
+                t_from_year=t_from_year,
+                t_to_year=t_to_year,
                 length=int(length)
             )
         except:
