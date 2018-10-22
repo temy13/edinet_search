@@ -16,12 +16,29 @@ def get_connection():
 
 LIMIT=10
 
-def get_items(query, offset=0):
+def get_items(query, t_from="1980/01/01", t_to="2030/12/31", offset=0):
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('SELECT count(*) FROM items where ishtml = true AND value LIKE %s ', ("%" + query + "%", ))
+            cur.execute("""
+                SELECT count(*) FROM items LEFT JOIN meta ON items.filename = meta.filename
+                WHERE
+                    items.ishtml = true AND
+                    items.value LIKE %s AND
+                    meta.term_from >= %s AND
+                    meta.term_to <= %s AND
+                """, ("%" + query + "%", t_from, t_to))
             count = cur.fetchone()
-            cur.execute('SELECT value, filename, ishtml FROM items where ishtml = true AND value LIKE %s ORDER BY id LIMIT %s OFFSET %s', ("%" + query + "%", LIMIT, offset))
+            cur.execute("""
+                SELECT value, filename, ishtml  FROM items LEFT JOIN meta ON items.filename = meta.filename
+                WHERE
+                    items.ishtml = true AND
+                    items.value LIKE %s AND
+                    meta.term_from >= %s AND
+                    meta.term_to <= %s AND
+                ORDER BY id
+                LIMIT %s
+                OFFSET %s
+            """, ("%" + query + "%", t_from, t_to, LIMIT, offset))
             rows = cur.fetchall()
             return count[0], [{"value":row[0], "filename":row[1], "ishtml":row[2]} for row in rows]
 

@@ -23,3 +23,8 @@
 2018-10-20 19:31:22.473 JST [27885] STATEMENT:  INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES ('backend/data/E14394/Xbrl_Search_20181020_192945.zip','ジャパンエクセレント投資法人','第17期','2014/7/1','2014/12/31')
 2018-10-20 19:51:20.227 JST [47816] ERROR:  relation "itmes" does not exist at character 16
 2018-10-20 19:51:20.227 JST [47816] STATEMENT:  select id from itmes where ishtml = true order by id limit 2 offset 0;
+2018-10-20 20:07:34.668 JST [2287] LOG:  received SIGHUP, reloading configuration files
+2018-10-20 20:07:43.371 JST [2287] LOG:  received smart shutdown request
+2018-10-20 20:07:43.373 JST [2287] LOG:  worker process: logical replication launcher (PID 2322) exited with exit code 1
+2018-10-20 20:07:43.373 JST [2317] LOG:  shutting down
+2018-10-20 20:07:43.391 JST [2287] LOG:  database system is shut down
