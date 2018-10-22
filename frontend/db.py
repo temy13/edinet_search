@@ -29,7 +29,7 @@ def get_items(query, t_from="1980/01/01", t_to="2030/12/31", offset=0):
                 """, ("%" + query + "%", t_from, t_to))
             count = cur.fetchone()
             cur.execute("""
-                SELECT value, filename, ishtml  FROM items LEFT JOIN meta ON items.filename = meta.filename
+                SELECT value, filename, ishtml,key  FROM items LEFT JOIN meta ON items.filename = meta.filename
                 WHERE
                     items.ishtml = true AND
                     items.value LIKE %s AND
@@ -40,7 +40,7 @@ def get_items(query, t_from="1980/01/01", t_to="2030/12/31", offset=0):
                 OFFSET %s
             """, ("%" + query + "%", t_from, t_to, LIMIT, offset))
             rows = cur.fetchall()
-            return count[0], [{"value":row[0], "filename":row[1], "ishtml":row[2]} for row in rows]
+            return count[0], [{"value":row[0], "filename":row[1], "ishtml":row[2], "key":row[3]} for row in rows]
 
 
 def get_meta(filename):

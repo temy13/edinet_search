@@ -17,3 +17,15 @@
 span.mark1 { background-color: yellow; } /* 黄色ハイライト用 */
 span.mark2 { background-color: lime; }   /* 緑色ハイライト用 */
 span.mark3 { background-color: #0ff; }   /* 水色ハイライト用 */
+
+ul{
+  flex-direction: row;
+
+  /* 画面幅に収まらない場合は折り返す */
+  flex-wrap: wrap;
+
+}
+
+li{
+  float:left;
+}

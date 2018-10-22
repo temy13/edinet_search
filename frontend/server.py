@@ -12,29 +12,32 @@ def dt_convert(tdatetime):
 
 def search(query, offset=0):
     count, data = db.get_items(query, offset)
+    rdata = []
     for d in data:
-        content = d["value"]
+        dx = {}
+        content = d["value"] 
         if d["ishtml"]:
             soup = BeautifulSoup(content, "lxml")
             content = soup.getText()
-
+        content = content.replace("\n","").replace("\u3000","")
         pos = content.find(query)
         s = pos - 300 if pos > 300 else 0
-        d["value"] = content[s:s+600]
+        dx["value"] = content[s:s+600]
         if len(content) > 600:
-            d["value"] += "..."
+            dx["value"] += "..."
 
         meta = db.get_meta(d["filename"])
         if not meta:
-          d["publisher"] = d["term_from"] = d["term_to"] = d["term"] = ""
+          dx["publisher"] = dx["term_from"] = dx["term_to"] = dx["term"] = ""
           continue
 
-        d.update(meta[0])
+        dx.update(meta[0])
 
-        d["term_from"] = dt_convert(d["term_from"])
-        d["term_to"] = dt_convert(d["term_to"])
-
-    return count, data
+        dx["term_from"] = dt_convert(dx["term_from"])
+        dx["term_to"] = dt_convert(dx["term_to"])
+        rdata.append(dx)
+    #print(vexist)
+    return count, rdata
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -73,6 +76,6 @@ application = tornado.web.Application([
 )
 
 if __name__ == '__main__':
-    application.listen(8008)
+    application.listen(8888)
     print("Server on port 8888...")
     tornado.ioloop.IOLoop.current().start()
