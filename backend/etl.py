@@ -8,6 +8,11 @@ import traceback
 from edinet_xbrl.edinet_xbrl_parser import EdinetXbrlParser
 from bs4 import BeautifulSoup
 
+def parse(v):
+    soup = BeautifulSoup(content, "lxml")
+    content = soup.getText()
+    return content
+
 
 def extract(fn, code):
     dir = fn.replace("zip","")

@@ -4,6 +4,7 @@ import psycopg2
 from os.path import join, dirname
 from dotenv import load_dotenv
 import traceback
+import etl
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
@@ -30,7 +31,8 @@ def insert_item(code, filename, key, value, ishtml):
             with conn.cursor() as cur:
                 #sql = """INSERT INTO items (code, filename, key, value, ishtml) VALUES ('%s', '%s', '%s', '%s', %s)""" % (code, filename, key, v, ishtml)
                 #cur.execute(sql)
-                cur.execute('INSERT INTO items (code, filename, key, value, ishtml) VALUES (%s, %s, %s, %s, %s)', (code, filename, key, value, ishtml))
+                c_value = etl.parse(value) if ishtml else value
+                cur.execute('INSERT INTO items (code, filename, key, value, origin_value, ishtml) VALUES (%s, %s, %s, %s, %s)', (code, filename, key, c_value, value, ishtml))
             conn.commit()
     except:
         print(filename)
