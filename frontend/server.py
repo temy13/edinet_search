@@ -46,7 +46,10 @@ def dt_query_convert(year, month, isfirst):
         return ""
     if isfirst:
         return "%s/%s/01" % (str(year), str(month))
-    _dt = datetime.date(int(year), int(month)+1, 1) - datetime.timedelta(days=1)
+    if int(month) == 12: 
+      _dt = datetime.date(int(year), 12, 31)
+    else:
+      _dt = datetime.date(int(year), int(month)+1, 1) - datetime.timedelta(days=1)
     return dt_convert(_dt)
 
 
