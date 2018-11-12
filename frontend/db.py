@@ -16,33 +16,31 @@ def get_connection():
 
 LIMIT=10
 
-def get_items(query, t_from="", t_to="", offset=0):
+def get_values(query, t_from="", t_to="", offset=0):
     t_from = "1980/01/01" if not t_from else t_from
     t_to = "2030/12/31" if not t_to else t_to
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT count(*) FROM items LEFT JOIN meta ON items.filename = meta.filename
+                SELECT count(distinct(values.id, values.value, values.filename)) FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
-                    items.ishtml = true AND
-                    items.value LIKE %s AND
+                    values.value LIKE %s AND
                     meta.term_from >= %s AND
                     meta.term_to <= %s
                 """, ("%" + query + "%", t_from, t_to))
             count = cur.fetchone()
             cur.execute("""
-                SELECT items.value, items.filename, items.ishtml, items.key FROM items LEFT JOIN meta ON items.filename = meta.filename
+                SELECT distinct values.value, values.filename, values.id FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
-                    items.ishtml = true AND
-                    items.value LIKE %s AND
+                    values.value LIKE %s AND
                     meta.term_from >= %s AND
                     meta.term_to <= %s
-                ORDER BY items.id
+                ORDER BY values.id
                 LIMIT %s
                 OFFSET %s
             """, ("%" + query + "%", t_from, t_to, LIMIT, offset))
             rows = cur.fetchall()
-            return count[0], [{"value":row[0], "filename":row[1], "ishtml":row[2], "key":row[3]} for row in rows]
+            return count[0], [{"value":row[0], "filename":row[1] } for row in rows]
 
 
 def get_meta(filename):

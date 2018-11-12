@@ -63,16 +63,17 @@ def download(code):
 
 if __name__ == '__main__':
     df = get_codes()
-    for index, item in df.iterrows():
+    for index, item in df[:1].iterrows():
         code = item["code"]
         print(code)
-        filenames = db.get_filenames(code)
-        download(code)
-        for fn in glob("backend/data/%s/*.zip" % code):
-            if fn in filenames:
-               continue
-#           [{"key":str, "value":str, "ishtml": boolean }]
-            ds= etl.extract(fn, code)
-            db.save_items(fn, code, ds)
+        # filenames = db.get_filenames(code)
+        # download(code)
+        for fn in glob("backend/data/%s/*.zip" % code)[:1]:
+            # if fn in filenames:
+            #    continue
+            items, values= etl.extract(fn, code)
+            print(len(items), len(values))
+            db.save_items(fn, code, items)
+            db.save_values(fn, code, values)
             meta.save_meta(fn)
     print("done")

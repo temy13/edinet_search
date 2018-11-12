@@ -7,8 +7,12 @@ import traceback
 # from xbrl_parser import xbrl_parse
 from edinet_xbrl.edinet_xbrl_parser import EdinetXbrlParser
 from bs4 import BeautifulSoup
+import re
 
-def parse(v):
+p = re.compile('<style type="text\/css">.*?<\/style>')
+
+def parse(content):
+    content = p.sub('', content)
     soup = BeautifulSoup(content, "lxml")
     content = soup.getText()
     return content
@@ -18,37 +22,37 @@ def extract(fn, code):
     dir = fn.replace("zip","")
     with zipfile.ZipFile(fn) as existing_zip:
         existing_zip.extractall(dir)
-    ds = []
-    return extract_dir(dir, ds)
+    items = []
+    values = []
+    return extract_dir(dir, items, values)
 
 
-def extract_dir(dir, ds):
+def extract_dir(dir, items, values):
     parser = EdinetXbrlParser()
     for path in glob(dir + "/*"):
         if os.path.isdir(path):
-            d = extract_dir(path, ds)
+            items, values = extract_dir(path, items, values)
             continue
         ext = path.split(".")[-1]
-        if not ext == "xbrl":
-            continue
-        xbrl = parser.parse_file(path)
-        for key in xbrl.get_keys():
-            for v in xbrl.get_data_list(key):
-                s = v.get_value()
-                if not s:
-                    continue
-                tris = s.replace("\n", "")
-                ds.append({"key":key, "value":s, "ishtml": (tris.startswith("<") and tris.endswith(">")) or (tris.startswith("&lt;") and tris.endswith("&gt;") ) })
-                #if ds[-1]["ishtml"]:
-                #    print(tris)
-                # if not s:
-                #     continue
-                # s = s.replace("\n", "")
-                # if s.startswith("<") and s.endswith(">"):
-                #     soup = BeautifulSoup(s, "html.parser")
-                # else:
-                #     print(s)
-    return ds
+
+        if path.endswith("_ixbrl.htm"):
+            f = open(path)
+            html = f.read()
+            f.close()
+            p = path.replace(dir, "").replace("/","")[:2]
+            part = int(p) if p.isdecimal() else -1
+            values.append({"value":html, "part":part})
+        elif ext == "xbrl":
+            xbrl = parser.parse_file(path)
+            for key in xbrl.get_keys():
+                for v in xbrl.get_data_list(key):
+                    s = v.get_value()
+                    if not s:
+                        continue
+                    tris = s.replace("\n", "")
+                    items.append({"key":key, "value":s, "ishtml": (tris.startswith("<") and tris.endswith(">")) or (tris.startswith("&lt;") and tris.endswith("&gt;") ) })
+
+    return items, values
 
 
 

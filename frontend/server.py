@@ -12,14 +12,14 @@ def dt_convert(tdatetime):
     return tdatetime.strftime('%Y/%m/%d')
 
 def search(query, offset=0, length=300, t_from="", t_to=""):
-    count, data = db.get_items(query, offset=offset, t_from=t_from, t_to=t_to)
+    count, data = db.get_values(query, offset=offset, t_from=t_from, t_to=t_to)
     rdata = []
     for d in data:
         dx = {}
         content = d["value"]
-        if d["ishtml"]:
-            soup = BeautifulSoup(content, "lxml")
-            content = soup.getText()
+        # if d["ishtml"]:
+        soup = BeautifulSoup(content, "lxml")
+        content = soup.getText()
         content = content.replace("\n","").replace("\u3000","")
         pos = content.find(query)
         s = pos - length if pos > length else 0
@@ -46,7 +46,7 @@ def dt_query_convert(year, month, isfirst):
         return ""
     if isfirst:
         return "%s/%s/01" % (str(year), str(month))
-    if int(month) == 12: 
+    if int(month) == 12:
       _dt = datetime.date(int(year), 12, 31)
     else:
       _dt = datetime.date(int(year), int(month)+1, 1) - datetime.timedelta(days=1)
