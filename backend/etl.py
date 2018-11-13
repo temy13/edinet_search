@@ -10,9 +10,12 @@ from bs4 import BeautifulSoup
 import re
 
 p = re.compile('<style type="text\/css">.*?<\/style>')
+p2 = re.compile('<ix:header>.*?<\/ix:header>')
+#p = re.compile('<.*?>.*?<\/.*?>')
 
 def parse(content):
     content = p.sub('', content)
+    content = p2.sub('', content)
     soup = BeautifulSoup(content, "lxml")
     content = soup.getText()
     return content

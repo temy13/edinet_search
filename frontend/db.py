@@ -16,26 +16,30 @@ def get_connection():
 
 LIMIT=10
 
-def get_values(query, t_from="", t_to="", offset=0):
+def get_values(query, t_from="", t_to="", offset=0, parts=[]):
     t_from = "1980/01/01" if not t_from else t_from
     t_to = "2030/12/31" if not t_to else t_to
+    parts = parts if parts else [0,1,2,3,-1]
+    q_part = str(tuple(parts)).replace(',)',')')
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT count(distinct(values.id, values.value, values.filename)) FROM values LEFT JOIN meta ON values.filename = meta.filename
+                SELECT count(distinct(values.value, values.filename)) FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
                     values.value LIKE %s AND
                     meta.term_from >= %s AND
-                    meta.term_to <= %s
-                """, ("%" + query + "%", t_from, t_to))
+                    meta.term_to <= %s AND
+                    values.part in """ + q_part
+                , ("%" + query + "%", t_from, t_to))
             count = cur.fetchone()
             cur.execute("""
-                SELECT distinct values.value, values.filename, values.id FROM values LEFT JOIN meta ON values.filename = meta.filename
+                SELECT distinct values.value, values.filename FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
                     values.value LIKE %s AND
                     meta.term_from >= %s AND
-                    meta.term_to <= %s
-                ORDER BY values.id
+                    meta.term_to <= %s AND
+                    values.part in """ + q_part + """
+                ORDER BY values.filename
                 LIMIT %s
                 OFFSET %s
             """, ("%" + query + "%", t_from, t_to, LIMIT, offset))

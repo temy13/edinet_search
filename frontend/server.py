@@ -11,8 +11,8 @@ from datetime import datetime as dt
 def dt_convert(tdatetime):
     return tdatetime.strftime('%Y/%m/%d')
 
-def search(query, offset=0, length=300, t_from="", t_to=""):
-    count, data = db.get_values(query, offset=offset, t_from=t_from, t_to=t_to)
+def search(query, offset=0, length=300, t_from="", t_to="", parts=[]):
+    count, data = db.get_values(query, offset=offset, t_from=t_from, t_to=t_to, parts=parts)
     rdata = []
     for d in data:
         dx = {}
@@ -68,8 +68,17 @@ class MainHandler(tornado.web.RequestHandler):
             t_from = dt_query_convert(t_from_year, t_from_month, True)
             t_to = dt_query_convert(t_to_year, t_to_month, False)
 
+            parts = []
+            q_part = [None, None, None]
+            if 'parts' in self.request.arguments:
+                parts = [int(x) for x in self.request.arguments['parts']]
+                q_part = [
+                    "checked" if x in parts else None
+                    for x in [1,2,3]
+                ]
+
             if query or t_from or t_to:
-                count, data = search(query, offset=offset, length=int(length), t_from=t_from, t_to=t_to)
+                count, data = search(query, offset=offset, length=int(length), t_from=t_from, t_to=t_to, parts=parts)
             else:
                 count = 0
                 data = []
@@ -82,11 +91,13 @@ class MainHandler(tornado.web.RequestHandler):
                 t_to_month=t_to_month,
                 t_from_year=t_from_year,
                 t_to_year=t_to_year,
-                length=int(length)
+                length=int(length),
+                part=q_part
             )
         except:
             print(traceback.format_exc())
-            self.render('index.html', count=0, data=[], query="",offset=0, t_from_month="", t_to_month="",t_from_year="", t_to_year="", length=300)
+            self.render('index.html', count=0, data=[], query="",offset=0, t_from_month="", t_to_month="",t_from_year="", t_to_year="", length=300, part=
+            [None,None,None])
 #        self.render('index.html', count=0, data=[], query="",offset=0)
 
     # def post(self):

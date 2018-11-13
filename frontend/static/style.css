@@ -33,3 +33,8 @@ li{
 .fg{
     position: relative;
 }
+
+body{
+  word-wrap : break-word;
+  overflow-wrap : break-word;
+}

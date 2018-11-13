@@ -7,6 +7,7 @@ import re
 z_digit = ["０", "１", "２", "３", "４","５", "６", "７", "８", "９"]
 h_digit = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 zh_digit = {z:h for z, h in zip(z_digit, h_digit)}
+term_words = ["第", "期"]
 
 def h_convert(s):
     i = int(re.sub(r'\D','',s))
@@ -23,24 +24,35 @@ def convert(s):
     s = s.replace("月","/")
     for z in z_digit:
         s = s.replace(z, zh_digit[z])
+    allowed = ["/"] + h_digit
+    for w in [w for w in s if w not in allowed]:
+        s = s.replace(w, "")
     ss = s.split("/")
-
     return "%s/%s/%s" % (h_convert(ss[0]), ss[1], ss[2])
 
+def term_convert(s):
+    allowed = term_words + z_digit + h_digit
+    for w in [w for w in s if w not in allowed]:
+        s = s.replace(w, "")
+    return s
+
+def space_split(t, n):
+    x = re.split(r'\s', t)
+    return [w for w in x if w][n]
 
 def save_meta(fn):
     try:
         publishers = db.get_items(filename=fn, key="jpsps_cor:IssuerNameCoverPage".lower())
         if not publishers:
-          print(fn)
+            print(fn)
+            return
         publisher = publishers[0]
         t = db.get_items(filename=fn, key="jpsps_cor:AccountingPeriodCoverPage".lower())
-        if not t:
-          print(fn)
         t = t[0]
-        term = t.split("（")[0]
-        term_from = convert(t.split("　")[1])
-        term_to = convert(t.split("　")[3])
+        term = term_convert(re.split("[（\s]", t)[0])
+        term_from = convert(space_split(t, 1))
+        term_to = convert(space_split(t, 3))
+        #print(fn, publisher, term, term_from, term_to)
         db.insert_meta(fn, publisher, term, term_from, term_to)
     except:
         print(fn)

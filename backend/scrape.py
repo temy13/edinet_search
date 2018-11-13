@@ -52,11 +52,9 @@ def download(code):
     options.set_headless(headless=True)
     driver = webdriver.Firefox(firefox_profile=fp,firefox_options=options)
     url = base % (code,)
-    #print(url)
     driver.get(url)
     for ele in driver.find_elements_by_xpath('//table[@class="resultTable table_cellspacing_1 table_border_1 mb_6"]//tr/td[7]//a'):
         time.sleep(1)
-        #print(ele)
         ele.click()
     driver.close()
 
@@ -65,9 +63,8 @@ if __name__ == '__main__':
     df = get_codes()
     for index, item in df.iterrows():
         code = item["code"]
-        print(code)
         filenames = db.get_filenames(code)
-        download(code)
+        #download(code)
         for fn in glob("backend/data/%s/*.zip" % code):
             if fn in filenames:
                continue
