@@ -24,7 +24,7 @@ def get_values(query, t_from="", t_to="", offset=0, parts=[]):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT count(distinct(values.value, values.filename)) FROM values LEFT JOIN meta ON values.filename = meta.filename
+                SELECT count(distinct(values.value, values.filename, meta.publisher, meta.term, meta.term_from, meta.term_to)) FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
                     values.value LIKE %s AND
                     meta.term_from >= %s AND
@@ -33,7 +33,8 @@ def get_values(query, t_from="", t_to="", offset=0, parts=[]):
                 , ("%" + query + "%", t_from, t_to))
             count = cur.fetchone()
             cur.execute("""
-                SELECT distinct values.value, values.filename FROM values LEFT JOIN meta ON values.filename = meta.filename
+                SELECT distinct values.value, values.filename, meta.publisher, meta.term, meta.term_from, meta.term_to
+                FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
                     values.value LIKE %s AND
                     meta.term_from >= %s AND
@@ -44,12 +45,12 @@ def get_values(query, t_from="", t_to="", offset=0, parts=[]):
                 OFFSET %s
             """, ("%" + query + "%", t_from, t_to, LIMIT, offset))
             rows = cur.fetchall()
-            return count[0], [{"value":row[0], "filename":row[1] } for row in rows]
+            return count[0], [{"value":row[0], "filename":row[1], "publisher":row[2], "term":row[3], "term_from":row[4], "term_to":row[5] } for row in rows]
 
 
-def get_meta(filename):
-    with get_connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute('SELECT publisher, term, term_from, term_to FROM meta where filename =  %s', (filename,))
-            rows = cur.fetchall()
-            return [{"publisher":row[0], "term":row[1], "term_from":row[2], "term_to":row[3]} for row in rows]
+# def get_meta(filename):
+#     with get_connection() as conn:
+#         with conn.cursor() as cur:
+#             cur.execute('SELECT publisher, term, term_from, term_to FROM meta where filename =  %s', (filename,))
+#             rows = cur.fetchall()
+#             return [{"publisher":row[0], "term":row[1], "term_from":row[2], "term_to":row[3]} for row in rows]

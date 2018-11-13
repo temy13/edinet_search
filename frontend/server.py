@@ -27,15 +27,16 @@ def search(query, offset=0, length=300, t_from="", t_to="", parts=[]):
         if len(content) > (length*2):
             dx["value"] += "..."
 
-        meta = db.get_meta(d["filename"])
-        if not meta:
-          dx["publisher"] = dx["term_from"] = dx["term_to"] = dx["term"] = ""
-          continue
+        # meta = db.get_meta(d["filename"])
+        # if not meta:
+        #   dx["publisher"] = dx["term_from"] = dx["term_to"] = dx["term"] = ""
+        #   continue
+        #dx.update(meta[0])
 
-        dx.update(meta[0])
-
-        dx["term_from"] = dt_convert(dx["term_from"])
-        dx["term_to"] = dt_convert(dx["term_to"])
+        dx["publisher"] = d["publisher"]
+        dx["term"] = d["term"]
+        dx["term_from"] = dt_convert(d["term_from"])
+        dx["term_to"] = dt_convert(d["term_to"])
         rdata.append(dx)
 
     return count, rdata
