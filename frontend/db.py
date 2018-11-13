@@ -24,7 +24,7 @@ def get_values(query, t_from="", t_to="", offset=0, parts=[]):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT count(distinct(values.value, values.filename, meta.publisher, meta.term, meta.term_from, meta.term_to)) FROM values LEFT JOIN meta ON values.filename = meta.filename
+                SELECT count(distinct(values.value, meta.publisher, meta.term, meta.term_from, meta.term_to)) FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
                     values.value LIKE %s AND
                     meta.term_from >= %s AND
@@ -33,7 +33,7 @@ def get_values(query, t_from="", t_to="", offset=0, parts=[]):
                 , ("%" + query + "%", t_from, t_to))
             count = cur.fetchone()
             cur.execute("""
-                SELECT distinct values.value, values.filename, meta.publisher, meta.term, meta.term_from, meta.term_to
+                SELECT distinct values.value, meta.publisher, meta.term, meta.term_from, meta.term_to
                 FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
                     values.value LIKE %s AND
