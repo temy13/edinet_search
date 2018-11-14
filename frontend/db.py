@@ -14,38 +14,79 @@ def get_connection():
     return psycopg2.connect(dsn)
 
 
+def result_filter(result):
+    r = []
+    check = set([])
+    #自分より下が既に存在していたらスルー
+    for n in [5, 4, 3, 2, 1]:
+        for d in [r for r in result if r["title" + str(n)]]:
+            t = False
+
+            k = d["publisher"] + d["term"]
+            check.add(k)
+            if k not in check:
+                t = True
+
+            for i in range(1,6):
+                k += d["title" + str(i)]
+                if k not in check:
+                    t = True
+                check.add(k)
+            if t:
+                r.append(d)
+    return r
+
+
+
+
 LIMIT=10
 
-def get_values(query, t_from="", t_to="", offset=0, parts=[]):
+def get_values(query, t_from="", t_to="", offset=0, titles=[]):
     t_from = "1980/01/01" if not t_from else t_from
     t_to = "2030/12/31" if not t_to else t_to
-    parts = parts if parts else [0,1,2,3,-1]
-    q_part = str(tuple(parts)).replace(',)',')')
+    q_titles = str(tuple(titles)).replace(',)',')')
+    offset = int(offset)
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT count(distinct(values.value, meta.publisher, meta.term, meta.term_from, meta.term_to)) FROM values LEFT JOIN meta ON values.filename = meta.filename
+                SELECT distinct values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5 FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
                     values.value LIKE %s AND
                     meta.term_from >= %s AND
                     meta.term_to <= %s AND
-                    values.part in """ + q_part
-                , ("%" + query + "%", t_from, t_to))
-            count = cur.fetchone()
-            cur.execute("""
-                SELECT distinct values.value, meta.publisher, meta.term, meta.term_from, meta.term_to
-                FROM values LEFT JOIN meta ON values.filename = meta.filename
-                WHERE
-                    values.value LIKE %s AND
-                    meta.term_from >= %s AND
-                    meta.term_to <= %s AND
-                    values.part in """ + q_part + """
-                ORDER BY values.filename
-                LIMIT %s
-                OFFSET %s
-            """, ("%" + query + "%", t_from, t_to, LIMIT, offset))
+                    (values.title1 in """ + q_titles + """ OR
+                    values.title2 in """ + q_titles + """ OR
+                    values.title3 in """ + q_titles + """ OR
+                    values.title4 in """ + q_titles + """ OR
+                    values.title5 in """ + q_titles + """)
+                ORDER BY meta.term_to DESC
+                """, ("%" + query + "%", t_from, t_to))
             rows = cur.fetchall()
-            return count[0], [{"value":row[0], "filename":row[1], "publisher":row[2], "term":row[3], "term_from":row[4], "term_to":row[5] } for row in rows]
+            result = [{"value":row[0], "publisher":row[1], "term":row[2], "term_from":row[3], "term_to":row[4],
+                "title1":row[5], "title2":row[6], "title3":row[7], "title4":row[8], "title5":row[9]} for row in rows]
+            result = result_filter(result)
+            # cur.execute("""
+            #     SELECT distinct values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5
+            #     FROM values LEFT JOIN meta ON values.filename = meta.filename
+            #     WHERE
+            #         values.value LIKE %s AND
+            #         meta.term_from >= %s AND
+            #         meta.term_to <= %s AND
+            #         values.title1 in """ + q_titles + """
+            #         values.title2 in """ + q_titles + """
+            #         values.title3 in """ + q_titles + """
+            #         values.title4 in """ + q_titles + """
+            #         values.title5 in """ + q_titles + """
+            #     ORDER BY values.filename
+            #     LIMIT %s
+            #     OFFSET %s
+            # """, ("%" + query + "%", t_from, t_to, LIMIT, offset))
+            # rows = cur.fetchall()
+            # result = [{"value":row[0], "filename":row[1], "publisher":row[2], "term":row[3], "term_from":row[4], "term_to":row[5],
+            #     "title1":row[6], "title2":row[7], "title3":row[8], "title4":row[9], "title":row[10]
+            #     } for row in rows]
+            # return count[0], [{"value":row[0], "filename":row[1], "publisher":row[2], "term":row[3], "term_from":row[4], "term_to":row[5] } for row in rows]
+            return len(result), result[offset:offset+LIMIT]
 
 
 # def get_meta(filename):

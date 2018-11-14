@@ -10,8 +10,15 @@ from bs4 import BeautifulSoup
 import re
 
 p = re.compile('<style type="text\/css">.*?<\/style>')
-p2 = re.compile('<ix:header>.*?<\/ix:header>')
+p2 = re.compile('<ix:header>[\s\S]*?<\/ix:header>')
+p3 = re.compile('<\?xml.*?>')
+p4 = re.compile('<html.*?>')
+p5 = re.compile('<head>(.|\s)*?<\/head>')
+p6 = re.compile('<ix:(header|nonNumeric).*?>')
+p7 = re.compile('<\/ix:(header|nonNumeric)>')
 #p = re.compile('<.*?>.*?<\/.*?>')
+
+
 
 def parse(content):
     content = p.sub('', content)
@@ -21,6 +28,18 @@ def parse(content):
     return content
 
 
+def extract_html(html):
+    html = p.sub('', html)
+    html = p2.sub('', html)
+    html = p3.sub('', html)
+    html = p4.sub('', html)
+    html = p5.sub('', html)
+    html = p6.sub('', html)
+    html = p7.sub('', html)
+    html = html.replace("</body>","").replace("<body>","").replace("</html>","")
+    return html
+
+
 def extract(fn, code):
     dir = fn.replace("zip","")
     with zipfile.ZipFile(fn) as existing_zip:
@@ -28,6 +47,8 @@ def extract(fn, code):
     items = []
     values = []
     return extract_dir(dir, items, values)
+
+
 
 
 def extract_dir(dir, items, values):
@@ -42,8 +63,8 @@ def extract_dir(dir, items, values):
             f = open(path)
             html = f.read()
             f.close()
-            p = path.replace(dir, "").replace("/","")[:2]
-            part = int(p) if p.isdecimal() else -1
+            p = path.replace(dir, "").replace("/","")[:7]
+            part = int(p) if p.isdecimal() else 9999999
             values.append({"value":html, "part":part})
         elif ext == "xbrl":
             xbrl = parser.parse_file(path)

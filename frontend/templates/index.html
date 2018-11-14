@@ -14,44 +14,43 @@
           <form action="/" method="get">
               <input name="query" type="text" placeholder="" value="{{query}}" id="query">
               <button type="submit">検索</button>
+              <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                詳細検索
+              </a>
+              <div class="collapse container" id="collapseExample">
+                <div class="row">
+                  <div class="cols-6">
+                    決算期
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="cols-6">
+                    <input name="t_from_year" type="number" placeholder="" value="{{t_from_year}}" min=1990 max=2020>年
+                    <input name="t_from_month" type="number" placeholder="" value="{{t_from_month}}" min=1 max=12>月期　から
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="cols-6">
+                    <input name="t_to_year" type="number" placeholder="" value="{{t_to_year}}" min=1990 max=2020>年
+                    <input name="t_to_month" type="number" placeholder="" value="{{t_to_month}}" min=1 max=12>月期　まで
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="cols-6">
+                    文字数
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="cols-6">
+                    前後<input name="length" type="number" placeholder="" value="{{length}}" min=10>文字
+                  </div>
+                </div>
 
-              <div class="row">
-                <div class="cols-6">
-                  決算期
-                </div>
-              </div>
-              <div class="row">
-                <div class="cols-6">
-                  <input name="t_from_year" type="number" placeholder="" value="{{t_from_year}}" min=1990 max=2020>年
-                  <input name="t_from_month" type="number" placeholder="" value="{{t_from_month}}" min=1 max=12>月期　から
-                </div>
-              </div>
-              <div class="row">
-                <div class="cols-6">
-                  <input name="t_to_year" type="number" placeholder="" value="{{t_to_year}}" min=1990 max=2020>年
-                  <input name="t_to_month" type="number" placeholder="" value="{{t_to_month}}" min=1 max=12>月期　まで
-                </div>
-              </div>
-              <div class="row">
-                <div class="cols-6">
-                  文字数
-                </div>
-              </div>
-              <div class="row">
-                <div class="cols-6">
-                  前後<input name="length" type="number" placeholder="" value="{{length}}" min=10>文字
-                </div>
-              </div>
-              <div class="row">
-                <div class="cols-4">
-                  1部<input name="parts" type="checkbox" value="1" {{part[0]}}>
-                </div>
-                <div class="cols-4">
-                  2部<input name="parts" type="checkbox" value="2" {{part[1]}}>
-                </div>
-                <div class="cols-4">
-                  3部<input name="parts" type="checkbox" value="3" {{part[2]}}>
-                </div>
+                {% for d in candidates %}
+                  <div>
+                    {{d["name"]}}<input name="titles" type="checkbox" value="{{d['value']}}" {{d['checked']}}>
+                  </div>
+                {% end %}
               </div>
 
           </form>
@@ -78,7 +77,8 @@
                 {% if i == int(offset) %}
                   <a class="page-link">{{ int((i/10) + 1) }}</a>
                 {% else %}
-                  <a class="page-link" href="/?query={{query}}&offset={{i}}">{{ int((i/10) + 1) }}</a>
+                  <a class="page-link" href="/?query={{query}}&offset={{i}}&t_from_year={{t_from_year}}&t_from_month={{t_from_month}}&t_to_year={{t_to_year}}&t_to_month={{t_to_month}}
+                  {{'&titles='.join([d['value'] for d in candidates if d['checked']]) }}">{{ int((i/10) + 1) }}</a>
                 {% end %}
               </li>
             {% end %}
