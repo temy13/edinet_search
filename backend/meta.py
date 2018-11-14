@@ -57,10 +57,10 @@ def save_meta(fn):
             return
         publisher = publishers[0]
         t = db.get_items(filename=fn, key="jpsps_cor:AccountingPeriodCoverPage".lower())
-        t = t[0]
+        t = re.sub("\s+", " ", t[0].replace("至",""))
         term = term_convert(re.split("[（\s]", t)[0])
         term_from = convert(space_split(t, 1))
-        term_to = convert(space_split(t, 3))
+        term_to = convert(space_split(t, 2))
         #print(fn, publisher, term, term_from, term_to)
         db.insert_meta(fn, publisher, term, term_from, term_to)
     except:
