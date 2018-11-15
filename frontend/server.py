@@ -167,7 +167,7 @@ class MainHandler(tornado.web.RequestHandler):
             t_from = dt_query_convert(t_from_year, t_from_month, True)
             t_to = dt_query_convert(t_to_year, t_to_month, False)
 
-            titles = [key_value(k) for k in KEYS]
+            titles = []#[key_value(k) for k in KEYS]
             q_titles = [{"name":k, "value":key_value(k), "checked":None} for k in KEYS]
             if 'titles' in self.request.arguments:
                 titles = [x.decode('utf-8') for x in self.request.arguments['titles']]

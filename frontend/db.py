@@ -48,7 +48,8 @@ def get_values(query, t_from="", t_to="", offset=0, titles=[]):
     offset = int(offset)
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("""
+           if titles:
+               cur.execute("""
                 SELECT distinct values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5 FROM values LEFT JOIN meta ON values.filename = meta.filename
                 WHERE
                     values.value LIKE %s AND
@@ -61,10 +62,19 @@ def get_values(query, t_from="", t_to="", offset=0, titles=[]):
                     values.title5 in """ + q_titles + """)
                 ORDER BY meta.term_to DESC
                 """, ("%" + query + "%", t_from, t_to))
-            rows = cur.fetchall()
-            result = [{"value":row[0], "publisher":row[1], "term":row[2], "term_from":row[3], "term_to":row[4],
+          else:
+               cur.execute("""
+                SELECT distinct values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5 FROM values LEFT JOIN meta ON values.filename = meta.filename
+                WHERE
+                    values.value LIKE %s AND
+                    meta.term_from >= %s AND
+                    meta.term_to <= %s
+                ORDER BY meta.term_to DESC
+                """, ("%" + query + "%", t_from, t_to))
+          rows = cur.fetchall()
+          result = [{"value":row[0], "publisher":row[1], "term":row[2], "term_from":row[3], "term_to":row[4],
                 "title1":row[5], "title2":row[6], "title3":row[7], "title4":row[8], "title5":row[9]} for row in rows]
-            result = result_filter(result)
+          result = result_filter(result)
             # cur.execute("""
             #     SELECT distinct values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5
             #     FROM values LEFT JOIN meta ON values.filename = meta.filename
@@ -86,7 +96,7 @@ def get_values(query, t_from="", t_to="", offset=0, titles=[]):
             #     "title1":row[6], "title2":row[7], "title3":row[8], "title4":row[9], "title":row[10]
             #     } for row in rows]
             # return count[0], [{"value":row[0], "filename":row[1], "publisher":row[2], "term":row[3], "term_from":row[4], "term_to":row[5] } for row in rows]
-            return len(result), result[offset:offset+LIMIT]
+          return len(result), result[offset:offset+LIMIT]
 
 
 # def get_meta(filename):
