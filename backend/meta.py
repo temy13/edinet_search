@@ -3,6 +3,8 @@ import pandas as pd
 import os
 import traceback
 import re
+import etl
+import sys
 
 z_digit = ["０", "１", "２", "３", "４","５", "６", "７", "８", "９", "１０"]
 m_digit = ["⓪", "①", "②", "③", "④","⑤", "⑥", "⑦", "⑧", "⑨", "⑩"]
@@ -26,31 +28,18 @@ def h_convert(s):
       return i
 
 def convert(s):
-    #s = s.replace("平成","")
-    s = s.replace("）","")
-    s = s.replace("日","")
-    s = s.replace("年","/")
-    s = s.replace("月","/")
-    for z in z_digit:
-        s = s.replace(z, zh_digit[z])
-    allowed = ["/"] + h_digit
-    for w in [w for w in s if w not in allowed]:
-        s = s.replace(w, "")
     ss = s.split("/")
     return "%s/%s/%s" % (h_convert(ss[0]), ss[1], ss[2])
 
-def term_convert(s):
-    allowed = term_words + z_digit + h_digit
-    for w in [w for w in s if w not in allowed]:
-        s = s.replace(w, "")
-    return s
 
 def space_split(t):
+    t = etl.parse(t)
+    t = re.sub("[^\s\d１２３４５６７８９０年月第期]", " ", t)
+    t = re.sub("\s+", " ", t)
+    t = t.replace("年","/")
+    t = t.replace("月","/")
+    t = zh_convert(t)
     x = re.split(r'\s', t)
-    allowed = term_words + z_digit + h_digit + ["年","月","日","/"]
-    for s in x:
-        for w in [w for w in s if w not in allowed]:
-            s = s.replace(w, "")
     return [w for w in x if w]
 
 def save_meta(fn):
@@ -61,16 +50,19 @@ def save_meta(fn):
             return
         publisher = publishers[0]
         t = db.get_items(filename=fn, key="jpsps_cor:AccountingPeriodCoverPage".lower())
-        t = re.sub("\s+", " ", t[0].replace("至",""))
-        term = term_convert(re.split("[（\s]", t)[0])
-        splited_t = space_split(t)
+        if not t:
+            print("t", fn)
+            return
+        splited_t = space_split(t[0])
+        print(t, splited_t)
+        term=splited_t[0]
         term_from = convert(splited_t[1])
         term_to = convert(splited_t[2])
-        #print(fn, publisher, term, term_from, term_to)
         db.insert_meta(fn, publisher, term, term_from, term_to)
     except:
         print(fn)
         print(traceback.format_exc())
+        sys.exit()
 
 def get_codes():
     df = pd.read_csv(os.getcwd() + "/backend/codes.csv")
@@ -78,7 +70,7 @@ def get_codes():
 
 if __name__ == '__main__':
     df = get_codes()
-    for index, item in df[2:3].iterrows():
+    for index, item in df.iterrows():
         code = item["code"]
         print(code)
         filenames = db.get_filenames(code)
