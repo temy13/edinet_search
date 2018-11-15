@@ -54,7 +54,6 @@ def save_meta(fn):
             print("t", fn)
             return
         splited_t = space_split(t[0])
-        print(t, splited_t)
         term=splited_t[0]
         term_from = convert(splited_t[1])
         term_to = convert(splited_t[2])
@@ -67,12 +66,3 @@ def save_meta(fn):
 def get_codes():
     df = pd.read_csv(os.getcwd() + "/backend/codes.csv")
     return df
-
-if __name__ == '__main__':
-    df = get_codes()
-    for index, item in df.iterrows():
-        code = item["code"]
-        print(code)
-        filenames = db.get_filenames(code)
-        for fn in filenames:
-            save_meta(fn)
