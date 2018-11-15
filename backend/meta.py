@@ -45,9 +45,13 @@ def term_convert(s):
         s = s.replace(w, "")
     return s
 
-def space_split(t, n):
+def space_split(t):
     x = re.split(r'\s', t)
-    return [w for w in x if w][n]
+    allowed = term_words + z_digit + h_digit + ["年","月","日","/"]
+    for s in x:
+        for w in [w for w in s if w not in allowed]:
+            s = s.replace(w, "")
+    return [w for w in x if w]
 
 def save_meta(fn):
     try:
@@ -59,8 +63,9 @@ def save_meta(fn):
         t = db.get_items(filename=fn, key="jpsps_cor:AccountingPeriodCoverPage".lower())
         t = re.sub("\s+", " ", t[0].replace("至",""))
         term = term_convert(re.split("[（\s]", t)[0])
-        term_from = convert(space_split(t, 1))
-        term_to = convert(space_split(t, 2))
+        splited_t = space_split(t)
+        term_from = convert(splited_t[1])
+        term_to = convert(splited_t[2])
         #print(fn, publisher, term, term_from, term_to)
         db.insert_meta(fn, publisher, term, term_from, term_to)
     except:
