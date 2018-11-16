@@ -50,7 +50,7 @@ def get_values(query, t_from="", t_to="", offset=0, titles=[]):
         with conn.cursor() as cur:
              if titles:
                  cur.execute("""
-                   SELECT distinct values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5 FROM values LEFT JOIN meta ON values.filename = meta.filename
+                   SELECT values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5 FROM values LEFT JOIN meta ON values.filename = meta.filename
                    WHERE
                       values.value LIKE %s AND
                       meta.term_from >= %s AND
@@ -65,7 +65,7 @@ def get_values(query, t_from="", t_to="", offset=0, titles=[]):
                  """, ("%" + query + "%", t_from, t_to))
              else:
                  cur.execute("""
-                    SELECT distinct values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5 FROM values LEFT JOIN meta ON values.filename = meta.filename
+                    SELECT values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5 FROM values LEFT JOIN meta ON values.filename = meta.filename
                     WHERE
                       values.value LIKE %s AND
                       meta.term_from >= %s AND

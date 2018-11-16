@@ -6,10 +6,10 @@ import json
 conf = {"host": "127.0.0.1", "port": 9200,
          "index": "edinet", "doc_type": "edinet"}
  
-es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
 
 
 def search(query, t_from="", t_to="", offset=0, titles=[]):
+    es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
     t_from = "1980/01/01" if not t_from else t_from
     t_to = "2030/12/31" if not t_to else t_to
     q_titles = str(tuple(titles)).replace(',)',')')
@@ -61,7 +61,7 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
         "title1":row["_source"]["title1"], "title2":row["_source"]["title2"], "title3":row["_source"]["title3"], "title4":row["_source"]["title4"], "title5":row["_source"]["title5"]
 	} for row in result]
     result = result_filter(result)
-    return result
+    return len(result), result[offset:(offset+1)*10]
 
 def result_filter(result):
     r = []
@@ -90,6 +90,6 @@ def result_filter(result):
 #print(len(search("エレクトロニクス")))
 #search("エレクトロニクス", titles=["第一部ファンド情報"])
 #print(len(search("表紙")))
-print(len(search("一般")))
+#print(len(search("一般")))
 #search("表紙", titles=["表紙"])
 #search("エレクト")

@@ -3,7 +3,6 @@ import tornado.ioloop
 import tornado.web
 import tornado.options
 import json
-import db
 from bs4 import BeautifulSoup
 import traceback
 import datetime
@@ -11,7 +10,8 @@ from datetime import datetime as dt
 import re
 import tornado.log
 import logging
-
+#import es
+import db
 
 z_digit = ["０", "１", "２", "３", "４","５", "６", "７", "８", "９", "１０"]
 m_digit = ["⓪", "①", "②", "③", "④","⑤", "⑥", "⑦", "⑧", "⑨", "⑩"]
@@ -113,13 +113,16 @@ KEYS = [
 def dt_convert(tdatetime):
     return tdatetime.strftime('%Y/%m/%d')
 
+app_log = logging.getLogger("tornado.application")
 def search(query, offset=0, length=300, t_from="", t_to="", titles=[]):
     count, data = db.get_values(query, offset=offset, t_from=t_from, t_to=t_to, titles=titles)
+    #count, data = es.search(query, offset=offset, t_from=t_from, t_to=t_to, titles=titles)
+    app_log.info(count)
+    app_log.info(len(data))
     rdata = []
     for d in data:
         dx = {}
         content = d["value"]
-        # if d["ishtml"]:
         soup = BeautifulSoup(content, "lxml")
         content = soup.getText()
         content = content.replace("\n","").replace("\u3000","")
@@ -128,12 +131,6 @@ def search(query, offset=0, length=300, t_from="", t_to="", titles=[]):
         dx["value"] = content[s:s+(length*2)]
         if len(content) > (length*2):
             dx["value"] += "..."
-
-        # meta = db.get_meta(d["filename"])
-        # if not meta:
-        #   dx["publisher"] = dx["term_from"] = dx["term_to"] = dx["term"] = ""
-        #   continue
-        #dx.update(meta[0])
 
         dx["publisher"] = d["publisher"]
         dx["term"] = d["term"]
@@ -155,7 +152,6 @@ def dt_query_convert(year, month, isfirst):
       _dt = datetime.date(int(year), int(month)+1, 1) - datetime.timedelta(days=1)
     return dt_convert(_dt)
 
-app_log = logging.getLogger("tornado.application")
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         try:
