@@ -1,0 +1,48 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_kuromoji_analyzer": {
+          "type": "custom",
+          "tokenizer": "kuromoji_tokenizer"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "edinet": {
+      "properties": {
+        "value": {
+          "type": "text",
+          "index": "true",
+          "analyzer": "my_kuromoji_analyzer"
+        },
+        "publisher": {
+          "type": "keyword"
+        },
+        "term": {
+          "type": "keyword"
+        },
+        "title1": {
+          "type": "keyword"
+        },
+        "title2": {
+          "type": "keyword"
+        },
+        "title3": {
+          "type": "keyword"
+        },
+        "title4": {
+          "type": "keyword"
+        },
+        "title5": {
+          "type": "keyword"
+        },
+        "term_date_range": {
+          "type": "date_range", 
+          "format": "YYYY-MM-DD'T'HH:mm:ss||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||epoch_millis"
+        }
+      }
+    }
+  }
+}

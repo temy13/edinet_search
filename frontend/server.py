@@ -9,6 +9,9 @@ import traceback
 import datetime
 from datetime import datetime as dt
 import re
+import tornado.log
+import logging
+
 
 z_digit = ["０", "１", "２", "３", "４","５", "６", "７", "８", "９", "１０"]
 m_digit = ["⓪", "①", "②", "③", "④","⑤", "⑥", "⑦", "⑧", "⑨", "⑩"]
@@ -152,14 +155,13 @@ def dt_query_convert(year, month, isfirst):
       _dt = datetime.date(int(year), int(month)+1, 1) - datetime.timedelta(days=1)
     return dt_convert(_dt)
 
-
+app_log = logging.getLogger("tornado.application")
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         try:
             query = self.get_argument("query", "")
             offset = self.get_argument("offset", 0)
             length = self.get_argument("length", 300)
-
             t_from_year = self.get_argument("t_from_year", "")
             t_from_month = self.get_argument("t_from_month", "")
             t_to_year = self.get_argument("t_to_year", "")
@@ -167,7 +169,6 @@ class MainHandler(tornado.web.RequestHandler):
 
             t_from = dt_query_convert(t_from_year, t_from_month, True)
             t_to = dt_query_convert(t_to_year, t_to_month, False)
-
             titles = []#[key_value(k) for k in KEYS]
             q_titles = [{"name":k, "value":key_value(k), "checked":None} for k in KEYS]
             if 'titles' in self.request.arguments:
@@ -193,7 +194,6 @@ class MainHandler(tornado.web.RequestHandler):
         except:
             print(traceback.format_exc())
             self.render('index.html', count=0, data=[], query="",offset=0, t_from_month="", t_to_month="",t_from_year="", t_to_year="", length=300, candidates=[{"name":k, "value":key_value(k), "checked":None} for k in KEYS])
-#        self.render('index.html', count=0, data=[], query="",offset=0)
 
     # def post(self):
     #     try:

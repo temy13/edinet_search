@@ -124,3 +124,14 @@ def insert_meta(filename, publisher, term, term_from, term_to):
         with conn.cursor() as cur:
             cur.execute('INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES (%s,%s,%s,%s,%s)', (filename, p, term, term_from, term_to))
         conn.commit()
+
+def get_all_values(limit=100, offset=0):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+             cur.execute("""
+                   SELECT values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5,values.id FROM values LEFT JOIN meta ON values.filename = meta.filename
+                 ORDER BY values.id LIMIT %s OFFSET %s""", (limit, offset))
+             rows = cur.fetchall()
+             result = [{"value":row[0], "publisher":row[1], "term":row[2], "term_from":row[3], "term_to":row[4],
+                "title1":row[5], "title2":row[6], "title3":row[7], "title4":row[8], "title5":row[9], "id":row[10]} for row in rows]
+             return result
