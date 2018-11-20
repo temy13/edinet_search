@@ -25,28 +25,12 @@
           "type": "keyword",
           "null_value": "NULL"
         },
-        "title1": {
-          "type": "keyword",
-          "null_value": "NULL"
-        },
-        "title2": {
-          "type": "keyword",
-         "null_value": "NULL"
-        },
-        "title3": {
-          "type": "keyword",
-          "null_value": "NULL"
-        },
-        "title4": {
-          "type": "keyword",
-           "null_value": "NULL"
-        },
-        "title5": {
+        "key": {
           "type": "keyword",
           "null_value": "NULL"
         },
         "term_date_range": {
-          "type": "date_range", 
+          "type": "date_range",
           "format": "YYYY-MM-DD'T'HH:mm:ss||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||epoch_millis"
         }
       }
