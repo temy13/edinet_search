@@ -85,6 +85,9 @@ def save_values(fn, code, ds):
         print(fn, code)
         return
     ds = sorted(ds, key=lambda x:x['part'])
+    html = "".join([x["value"] for x in ds])
+    insert_value(code, fn, html, ["ALL"])
+    return
     html = "".join([x["value"] for x in ds][1:-1])
     html = etl.extract_html(html)
     recursive(code, fn, html, 1,[])
@@ -125,13 +128,32 @@ def insert_meta(filename, publisher, term, term_from, term_to):
             cur.execute('INSERT INTO meta (filename, publisher, term, term_from, term_to) VALUES (%s,%s,%s,%s,%s)', (filename, p, term, term_from, term_to))
         conn.commit()
 
-def get_all_values(limit=100, offset=0):
+def get_all_values(limit=100, offset=0, title=""):
     with get_connection() as conn:
         with conn.cursor() as cur:
              cur.execute("""
-                   SELECT values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5,values.id FROM values LEFT JOIN meta ON values.filename = meta.filename
-                 ORDER BY values.id LIMIT %s OFFSET %s""", (limit, offset))
+                   SELECT values.value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.title1, values.title2, values.title3, values.title4, values.title5,values.id 
+                   FROM values LEFT JOIN meta ON values.filename = meta.filename WHERE title1 = %s
+                 ORDER BY values.id LIMIT %s OFFSET %s""", (title, limit, offset))
              rows = cur.fetchall()
              result = [{"value":row[0], "publisher":row[1], "term":row[2], "term_from":row[3], "term_to":row[4],
                 "title1":row[5], "title2":row[6], "title3":row[7], "title4":row[8], "title5":row[9], "id":row[10]} for row in rows]
              return result
+
+def get_data_by_fn(fn):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+             cur.execute("""
+                   SELECT values.origin_value, meta.publisher, meta.term, meta.term_from, meta.term_to, values.id, values.title1 
+                   FROM values LEFT JOIN meta ON values.filename = meta.filename WHERE meta.filename = %s and values.title1 = 'ALL'
+                 """, (fn,))
+             rows = cur.fetchall()
+             result = [{"origin":row[0], "publisher":row[1], "term":row[2], "term_from":row[3], "term_to":row[4], "id":row[5], "title":row[6]} for row in rows]
+             return result
+
+def get_meta(filename):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('SELECT publisher, term, term_from, term_to FROM meta where filename =  %s', (filename,))
+            rows = cur.fetchall()
+            return [{"publisher":row[0], "term":row[1], "term_from":row[2], "term_to":row[3]} for row in rows]

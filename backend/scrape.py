@@ -64,12 +64,12 @@ if __name__ == '__main__':
     for index, item in df.iterrows():
         code = item["code"]
         filenames = db.get_filenames(code)
-        download(code)
+        #download(code)
         for fn in glob("backend/data/%s/*.zip" % code):
-            if fn in filenames:
-               continue
+            #if fn in filenames:
+            #   continue
             items, values= etl.extract(fn, code)
-            db.save_items(fn, code, items)
+            #db.save_items(fn, code, items)
             db.save_values(fn, code, values)
-            meta.save_meta(fn)
+            #meta.save_meta(fn)
     print("done")

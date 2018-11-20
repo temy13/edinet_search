@@ -18,25 +18,32 @@
           "analyzer": "my_kuromoji_analyzer"
         },
         "publisher": {
-          "type": "keyword"
+          "type": "keyword",
+          "null_value": "NULL"
         },
         "term": {
-          "type": "keyword"
+          "type": "keyword",
+          "null_value": "NULL"
         },
         "title1": {
-          "type": "keyword"
+          "type": "keyword",
+          "null_value": "NULL"
         },
         "title2": {
-          "type": "keyword"
+          "type": "keyword",
+         "null_value": "NULL"
         },
         "title3": {
-          "type": "keyword"
+          "type": "keyword",
+          "null_value": "NULL"
         },
         "title4": {
-          "type": "keyword"
+          "type": "keyword",
+           "null_value": "NULL"
         },
         "title5": {
-          "type": "keyword"
+          "type": "keyword",
+          "null_value": "NULL"
         },
         "term_date_range": {
           "type": "date_range", 

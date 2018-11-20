@@ -50,9 +50,9 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
     s_id = None
     s_time="2m"
     while(s_size):
-      d = es.search(index=conf["index"], body=body_, scroll=s_time) if not s_id else es.search(scroll_id=s_id, scroll=s_time,request_timeout=150)
-      s_id = data['_scroll_id']
-      s_size = len(data['hits']['hits'])
+      d = es.search(index=conf["index"], body=body_, scroll=s_time) if not s_id else es.scroll(scroll_id=s_id, scroll=s_time)
+      s_id = d['_scroll_id']
+      s_size = len(d['hits']['hits'])
       result.extend(d["hits"]["hits"])
       
     result = [{
