@@ -100,6 +100,26 @@ def get_values(query, t_from="", t_to="", offset=0, titles=[]):
              return len(result), result[offset:offset+LIMIT]
 
 
+def get_targets(query, t_from="", t_to="", offset=0, titles=[]):
+    t_from = "1980/01/01" if not t_from else t_from
+    t_to = "2030/12/31" if not t_to else t_to
+    q_titles = str(tuple(titles)).replace(',)',')')
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            query = """
+		SELECT publisher, term, term_from, term_to, value 
+                FROM targets
+                WHERE
+                      value LIKE '%s' AND
+                      term_from >= '%s' AND
+                      term_to <= '%s' """ % ("%" + query + "%", t_from, t_to)
+            if titles:
+                query += """AND key in """ + q_titles
+            cur.execute(query) 
+            rows = cur.fetchall()
+            result = [{"publisher":row[0], "term":row[1], "term_from":row[2], "term_to":row[3], "value":row[4]} for row in rows]
+            return len(result), result[offset:offset+LIMIT]
+
 # def get_meta(filename):
 #     with get_connection() as conn:
 #         with conn.cursor() as cur:

@@ -11,7 +11,7 @@ import re
 import tornado.log
 import logging
 import es
-#import db
+import db
 
 z_digit = ["０", "１", "２", "３", "４","５", "６", "７", "８", "９", "１０"]
 m_digit = ["⓪", "①", "②", "③", "④","⑤", "⑥", "⑦", "⑧", "⑨", "⑩"]
@@ -111,7 +111,6 @@ KEYS = [
 ]
 
 def dt_convert(tdatetime):
-    print(type(tdatetime))
     if type(tdatetime) is str:
         return tdatetime
     return tdatetime.strftime('%Y/%m/%d')
@@ -120,6 +119,8 @@ app_log = logging.getLogger("tornado.application")
 def search(query, offset=0, length=300, t_from="", t_to="", titles=[]):
     #count, data = db.get_values(query, offset=offset, t_from=t_from, t_to=t_to, titles=titles)
     count, data = es.search(query, offset=offset, t_from=t_from, t_to=t_to, titles=titles)
+    #if count == 0:
+    #    count, data = db.get_targets(query, offset=offset, t_from=t_from, t_to=t_to, titles=titles)
     print(count, len(data))   
     rdata = []
     for d in data:

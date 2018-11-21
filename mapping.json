@@ -2,9 +2,20 @@
   "settings": {
     "analysis": {
       "analyzer": {
-        "my_kuromoji_analyzer": {
+        "my_analyzer": {
           "type": "custom",
           "tokenizer": "kuromoji_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "ngram",
+          "min_gram": 2,
+          "max_gram": 3,
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
         }
       }
     }
@@ -15,7 +26,7 @@
         "value": {
           "type": "text",
           "index": "true",
-          "analyzer": "my_kuromoji_analyzer"
+          "analyzer": "my_analyzer"
         },
         "publisher": {
           "type": "keyword",

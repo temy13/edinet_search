@@ -88,12 +88,12 @@ def save_values(fn, code, ds):
     html = "".join([x["value"] for x in ds])
     insert_value(code, fn, html, ["ALL"])
     return
-    html = "".join([x["value"] for x in ds][1:-1])
-    html = etl.extract_html(html)
-    recursive(code, fn, html, 1,[])
+    #html = "".join([x["value"] for x in ds][1:-1])
+    #html = etl.extract_html(html)
+    #recursive(code, fn, html, 1,[])
     
-    insert_value(code, fn, etl.extract_html(ds[0]["value"]), ["表紙"])
-    insert_value(code, fn, etl.extract_html(ds[-1]["value"]), ["監査報告書"])
+    #insert_value(code, fn, etl.extract_html(ds[0]["value"]), ["表紙"])
+    #insert_value(code, fn, etl.extract_html(ds[-1]["value"]), ["監査報告書"])
     # for d in ds:
     #    insert_value(code, fn, d["value"], d["part"])
 
@@ -156,4 +156,14 @@ def get_meta(filename):
         with conn.cursor() as cur:
             cur.execute('SELECT publisher, term, term_from, term_to FROM meta where filename =  %s', (filename,))
             rows = cur.fetchall()
-            return [{"publisher":row[0], "term":row[1], "term_from":row[2], "term_to":row[3]} for row in rows]
+            return [{"publisher":row[0], "term":row[1], "term_from":row[2], "term_to":row[3]} for row in rows][0]
+
+
+def insert_target(code, filename, value, key, publisher, term, term_from, term_to):
+    p = publisher.replace("'","\'")
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('INSERT INTO targets (code, value, key, filename, publisher, term, term_from, term_to) VALUES (%s,%s,%s, %s,%s,%s,%s,%s)', (code, value, key, filename, p, term, term_from, term_to))
+        conn.commit()
+
+

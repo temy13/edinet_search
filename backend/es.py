@@ -7,6 +7,7 @@ import re
 conf = {"host": "127.0.0.1", "port": 9200,
          "index": "edinet", "doc_type": "edinet"}
 import etl
+import uuid 
 es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
 n = 0
 LIMIT = 1000
@@ -113,7 +114,8 @@ KEYS_SUB = {
 "表紙":[],
 "第一部 ファンド情報":[
     "第１ ファンドの状況",
-    "１ 投資法人の概況","(1) 主要な経営指標等の推移","(2) 投資法人の目的及び基本的性格","(3) 投資法人の仕組み","(4) 投資法人の機構","(5) 投資法人の出資総額","(6) 主要な投資主の状況","(7) 資産運用会社従業員等投資口所有制度の内容":[],
+    "１ 投資法人の概況","(1) 主要な経営指標等の推移","(2) 投資法人の目的及び基本的性格","(3) 投資法人の仕組み",
+    "(4) 投資法人の機構","(5) 投資法人の出資総額","(6) 主要な投資主の状況","(7) 資産運用会社従業員等投資口所有制度の内容",
     "２ 投資方針",
     "(1) 投資方針",
     "(2) 投資対象",
@@ -344,7 +346,7 @@ def main():
     for index, item in df.iterrows():
         code = item["code"]
         filenames = db.get_filenames(code)
-        for fn in filenames[:1]:
+        for fn in filenames:
             data = db.get_data_by_fn(fn)
             if not data:
                 continue
@@ -352,19 +354,19 @@ def main():
     print("----")
 
 
-def connection(d, k):
-    targets = k + keys_sub[k]
-    return "".join([d[t] for t in targets])
+def connection(data, k):
+    targets = [k] + keys_sub[k]
+    return "".join([data[t] for t in targets if t in data])
 
 
-def insert_es(d, fn):
+def insert_es(data, fn):
     datas = []
-    for k,v in d.items():
-        v = connection(d, k)
-        row = get_meta(fn)
+    for k,v in data.items():
+        v = connection(data, k)
+        row = db.get_meta(fn)
         d = {
-	   "value":d["value"],
-	   "key":key,
+	   "value":v,
+	   "key":k,
 	   "term":row["term"],
 	   "publisher":row["publisher"],
 	   "term_date_range": {
@@ -372,8 +374,9 @@ def insert_es(d, fn):
 	     "lte":row["term_to"]
 	      }
         }
-        datas.append({'_id':row["id"], '_op_type':'create','_index':conf["index"],'_type':conf["doc_type"],'_source':d})
-
+        _id = uuid.uuid1() 
+        datas.append({'_id':_id.int, '_op_type':'create','_index':conf["index"],'_type':conf["doc_type"],'_source':d})
+        #db.insert_target(code="", filename=fn, value=d["value"], key=d["key"], term=d["term"], term_from=row["term_from"], term_to=row["term_to"], publisher=row["publisher"])
     helpers.bulk(client=es,actions=datas,refresh=True,chunk_size=1000,request_timeout=150)
-    print("inserted", n, n*LIMIT+len(datas) )
-    n += 1
+    print("inserted", len(datas) )
+main()
