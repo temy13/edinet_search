@@ -6,13 +6,9 @@ import os
 import os.path
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-# from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-# from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
 from glob import glob
 import db
+import es
 import etl
 import meta
 base = "https://disclosure.edinet-fsa.go.jp/E01EW/BLMainController.jsp?uji.verb=W1E63010CXW1E6A010DSPSch&uji.bean=ee.bean.parent.EECommonSearchBean&TID=W1E63011&PID=W1E63010&SESSIONKEY=1538717569222&lgKbn=2&pkbn=0&skbn=0&dskb=&dflg=0&iflg=0&preId=1&row=100&idx=0&syoruiKanriNo=&mul=%s&fls=on&cal=1&era=H&yer=&mon=&pfs=5"
@@ -64,12 +60,13 @@ if __name__ == '__main__':
     for index, item in df.iterrows():
         code = item["code"]
         filenames = db.get_filenames(code)
-        #download(code)
+        download(code)
         for fn in glob("backend/data/%s/*.zip" % code):
-            #if fn in filenames:
-            #   continue
+            if fn in filenames:
+               continue
             items, values= etl.extract(fn, code)
-            #db.save_items(fn, code, items)
+            db.save_items(fn, code, items)
             db.save_values(fn, code, values)
-            #meta.save_meta(fn)
+            meta.save_meta(fn)
+            es.insert_to_es(fn)
     print("done")

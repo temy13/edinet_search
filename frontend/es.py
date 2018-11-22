@@ -7,7 +7,8 @@ conf = {"host": "127.0.0.1", "port": 9200,
  
 SIZE = 10
 
-def normal_saerch(_bool, offset):
+def normal_search(_bool, offset):
+    es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
     body_ = {
 	"from":offset,
 	"size":SIZE,
@@ -21,6 +22,7 @@ def normal_saerch(_bool, offset):
     return count, result
 
 def scroll_search(_bool, offset):
+    es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
     body_ = {
 	"from":0,
 	"size":3000,
@@ -29,13 +31,13 @@ def scroll_search(_bool, offset):
 	}
     }
     result = []
-    #s_size = 1
+    s_size = 1
     s_id = None
     s_time="2m"
     while(s_size):
       d = es.search(index=conf["index"], body=body_, scroll=s_time) if not s_id else es.scroll(scroll_id=s_id, scroll=s_time)
       s_id = d['_scroll_id']
-      #s_size = len(d['hits']['hits'])
+      s_size = len(d['hits']['hits'])
       result.extend(d["hits"]["hits"])
       if len(result) > (offset + SIZE):
         break
@@ -45,7 +47,6 @@ def scroll_search(_bool, offset):
 
 
 def search(query, t_from="", t_to="", offset=0, titles=[]):
-    es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
     t_from = "1980/01/01" if not t_from else t_from
     t_to = "2030/12/31" if not t_to else t_to
     q_titles = str(tuple(titles)).replace(',)',')')
@@ -79,7 +80,7 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
        #_bool["should"] = shoulds
        #_bool["minimum_should_match"] = 1
     _bool = {"filter":filters}
-    if offset < 9990:
+    if offset < 99900:
       count, result = normal_search(_bool, offset)
     else:
       count, result = scroll_search(_bool, offset)

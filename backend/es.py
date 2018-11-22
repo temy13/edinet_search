@@ -340,18 +340,25 @@ def ex_parse(html, fn):
     d[key_value(titles[-1])] = subtext
     insert_es(d, fn)
 
-def main():
-    df = scrape.get_codes()
+#def main():
+#    df = scrape.get_codes()
+#
+#    for index, item in df.iterrows():
+#        code = item["code"]
+#        filenames = db.get_filenames(code)
+#        for fn in filenames:
+#            data = db.get_data_by_fn(fn)
+#            if not data:
+#                continue
+#            ex_parse(data[0]["origin"], fn)
+#    print("----")
 
-    for index, item in df.iterrows():
-        code = item["code"]
-        filenames = db.get_filenames(code)
-        for fn in filenames:
-            data = db.get_data_by_fn(fn)
-            if not data:
-                continue
-            ex_parse(data[0]["origin"], fn)
-    print("----")
+
+def insert_to_es(fn):
+     data = db.get_data_by_fn(fn)
+     if not data:
+         continue
+     ex_parse(data[0]["origin"], fn)
 
 
 def connection(data, k):
