@@ -60,7 +60,9 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
     #   }
     #},
     {
-	"match":{"value":query}
+	"match_phrase":{
+		"value":query
+	}
     },
     {
     	"range": {
