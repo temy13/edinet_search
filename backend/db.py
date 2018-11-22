@@ -24,37 +24,27 @@ def get_filenames(code):
             rows = cur.fetchall()
             return [row[0] for row in rows]
 
-# def insert_value(code, filename, value, part):
-#     try:
-#         with get_connection() as conn:
-#             with conn.cursor() as cur:
-#                 c_value = etl.parse(value)
-#                 cur.execute('INSERT INTO values (code, filename, value, origin_value, part) VALUES (%s, %s, %s, %s, %s)', (code, filename, c_value, value, part))
-#             conn.commit()
-#     except:
-#         print(filename)
-#         print(traceback.format_exc())
-
-def c_ts(a, n):
-    t = ""
-    if len(a) > n:
-        # t = a[n].replace("【","").replace("】","")
-        t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", a[n])
-        t = meta.zh_convert(t)
-
-    return t
+#def c_ts(a, n):
+#    t = ""
+#    if len(a) > n:
+#        # t = a[n].replace("【","").replace("】","")
+#        t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", a[n])
+#        t = meta.zh_convert(t)
+#
+#    return t
 
 def insert_value(code, filename, value, ts):
     if not ts:
         return
-    # print(ts)
-    # print(c_ts(ts, 0), c_ts(ts, 1), c_ts(ts, 2), c_ts(ts, 3), c_ts(ts, 4))
     try:
         with get_connection() as conn:
             with conn.cursor() as cur:
                 parsed_value = etl.parse(value)
-                cur.execute('INSERT INTO values (code, filename, value, origin_value, title1, title2, title3, title4, title5) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
-                    (code, filename, parsed_value, value, c_ts(ts, 0), c_ts(ts, 1), c_ts(ts, 2), c_ts(ts, 3), c_ts(ts, 4))
+                #cur.execute('INSERT INTO values (code, filename, value, origin_value, title1, title2, title3, title4, title5) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                #    (code, filename, parsed_value, value, c_ts(ts, 0), c_ts(ts, 1), c_ts(ts, 2), c_ts(ts, 3), c_ts(ts, 4))
+                #)
+                cur.execute('INSERT INTO values (code, filename, value, origin_value, title1) VALUES (%s, %s, %s, %s, %s)',
+                    (code, filename, parsed_value, value, ts[0])
                 )
             conn.commit()
     except:
@@ -68,17 +58,6 @@ def insert_fn(code, filename):
             cur.execute('INSERT INTO filenames (code, filename) VALUES (%s,%s)', (code, filename))
         conn.commit()
 
-def recursive(code, fn, text, n, titles):
-    insert_value(code, fn, text, titles)
-    k = "<h%s>" % str(n)
-    close = k.replace("<","</")
-    divs = [x for x in re.split("<h%s(.|\s)*?>" % str(n), text) if x and close in x]
-    for div in divs:
-        div = k + div
-        t = etl.parse(re.match(r"<h%s>(.|\s)*?<\/h%s>" % (str(n), str(n)), div).group(0))
-        ts = copy(titles)
-        ts.append(t)
-        recursive(code, fn, div, n+1, ts)
 
 def save_values(fn, code, ds):
     if not ds:
@@ -88,14 +67,6 @@ def save_values(fn, code, ds):
     html = "".join([x["value"] for x in ds])
     insert_value(code, fn, html, ["ALL"])
     return
-    #html = "".join([x["value"] for x in ds][1:-1])
-    #html = etl.extract_html(html)
-    #recursive(code, fn, html, 1,[])
-    
-    #insert_value(code, fn, etl.extract_html(ds[0]["value"]), ["表紙"])
-    #insert_value(code, fn, etl.extract_html(ds[-1]["value"]), ["監査報告書"])
-    # for d in ds:
-    #    insert_value(code, fn, d["value"], d["part"])
 
 def insert_item(code, filename, key, value, ishtml):
     try:
