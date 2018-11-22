@@ -78,7 +78,7 @@
                   <a class="page-link">{{ int((i/10) + 1) }}</a>
                 {% else %}
                   <a class="page-link" href="/?query={{query}}&offset={{i}}&t_from_year={{t_from_year}}&t_from_month={{t_from_month}}&t_to_year={{t_to_year}}&t_to_month={{t_to_month}}
-                  {{'&titles='.join([d['value'] for d in candidates if d['checked']]) }}">{{ int((i/10) + 1) }}</a>
+                  &titles={{'&titles='.join([d['value'] for d in candidates if d['checked']]) }}">{{ int((i/10) + 1) }}</a>
                 {% end %}
               </li>
             {% end %}
