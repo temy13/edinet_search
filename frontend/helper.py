@@ -278,6 +278,12 @@ TITLES_SUB = {
 }
 
 
+def title_normalize(t):
+    t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
+    t = zh_convert(t)
+    return t
+
+
 _titles = [title_normalize(k) for k in TITLES]
 _titles_sub = {title_normalize(k):[title_normalize(x) for x in v] for k, v  in TITLES_SUB.items()}
 _sub_titles = {t:set([]) for t in _titles}
@@ -293,6 +299,13 @@ h_digit = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 zh_digit = {z:h for z, h in zip(z_digit, h_digit)}
 mh_digit = {m:h for m, h in zip(m_digit, h_digit)}
 
+def zh_convert(s):
+    for z in z_digit:
+        s = s.replace(z, zh_digit[z])
+    for m in m_digit:
+        s = s.replace(m, mh_digit[m])
+    return s
+
 def title_filter(titles):
     if not titles:
         return [title_normalize(t) for t in ["表紙","第一部 ファンド情報","第二部 投資法人の詳細情報", "監査報告書"]]
@@ -303,16 +316,3 @@ def title_filter(titles):
             r.append(t)
     print(r)
     return r
-
-
-def zh_convert(s):
-    for z in z_digit:
-        s = s.replace(z, zh_digit[z])
-    for m in m_digit:
-        s = s.replace(m, mh_digit[m])
-    return s
-
-def title_normalize(t):
-    t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
-    t = zh_convert(t)
-    return t

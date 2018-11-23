@@ -277,6 +277,11 @@ TITLES_SUB = {
     "監査報告書":[]
 }
 
+def title_normalize(t):
+    t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
+    t = zh_convert(t)
+    return t
+
 
 _titles = [title_normalize(k) for k in TITLES]
 _titles_sub = {title_normalize(k):[title_normalize(x) for x in v] for k, v  in TITLES_SUB.items()}
@@ -295,8 +300,3 @@ def zh_convert(s):
     for m in m_digit:
         s = s.replace(m, mh_digit[m])
     return s
-
-def title_normalize(t):
-    t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
-    t = zh_convert(t)
-    return t
