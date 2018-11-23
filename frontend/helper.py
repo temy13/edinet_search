@@ -278,11 +278,6 @@ TITLES_SUB = {
 }
 
 
-def title_normalize(t):
-    t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
-    t = zh_convert(t)
-    return t
-
 
 _titles = [title_normalize(k) for k in TITLES]
 _titles_sub = {title_normalize(k):[title_normalize(x) for x in v] for k, v  in TITLES_SUB.items()}
@@ -316,3 +311,8 @@ def title_filter(titles):
             r.append(t)
     print(r)
     return r
+
+def title_normalize(t):
+    t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
+    t = zh_convert(t)
+    return t
