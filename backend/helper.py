@@ -276,12 +276,6 @@ TITLES_SUB = {
     "第７ 参考情報":[],
     "監査報告書":[]
 }
-
-
-_titles = [title_normalize(k) for k in TITLES]
-_titles_sub = {title_normalize(k):[title_normalize(x) for x in v] for k, v  in TITLES_SUB.items()}
-
-
 z_digit = ["０", "１", "２", "３", "４","５", "６", "７", "８", "９", "１０"]
 m_digit = ["⓪", "①", "②", "③", "④","⑤", "⑥", "⑦", "⑧", "⑨", "⑩"]
 h_digit = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
@@ -296,8 +290,11 @@ def zh_convert(s):
         s = s.replace(m, mh_digit[m])
     return s
 
-
 def title_normalize(t):
     t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
     t = zh_convert(t)
     return t
+
+
+_titles = [title_normalize(k) for k in TITLES]
+_titles_sub = {title_normalize(k):[title_normalize(x) for x in v] for k, v  in TITLES_SUB.items()}

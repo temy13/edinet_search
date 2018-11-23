@@ -277,6 +277,23 @@ TITLES_SUB = {
     "監査報告書":[]
 }
 
+z_digit = ["０", "１", "２", "３", "４","５", "６", "７", "８", "９", "１０"]
+m_digit = ["⓪", "①", "②", "③", "④","⑤", "⑥", "⑦", "⑧", "⑨", "⑩"]
+h_digit = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+
+zh_digit = {z:h for z, h in zip(z_digit, h_digit)}
+mh_digit = {m:h for m, h in zip(m_digit, h_digit)}
+def zh_convert(s):
+    for z in z_digit:
+        s = s.replace(z, zh_digit[z])
+    for m in m_digit:
+        s = s.replace(m, mh_digit[m])
+    return s
+
+def title_normalize(t):
+    t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
+    t = zh_convert(t)
+    return t
 
 
 _titles = [title_normalize(k) for k in TITLES]
@@ -287,19 +304,7 @@ for k, v in _titles_sub.items():
         _sub_titles[_v].add(k)
 
 
-z_digit = ["０", "１", "２", "３", "４","５", "６", "７", "８", "９", "１０"]
-m_digit = ["⓪", "①", "②", "③", "④","⑤", "⑥", "⑦", "⑧", "⑨", "⑩"]
-h_digit = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
-zh_digit = {z:h for z, h in zip(z_digit, h_digit)}
-mh_digit = {m:h for m, h in zip(m_digit, h_digit)}
-
-def zh_convert(s):
-    for z in z_digit:
-        s = s.replace(z, zh_digit[z])
-    for m in m_digit:
-        s = s.replace(m, mh_digit[m])
-    return s
 
 def title_filter(titles):
     if not titles:
@@ -311,8 +316,3 @@ def title_filter(titles):
             r.append(t)
     print(r)
     return r
-
-def title_normalize(t):
-    t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
-    t = zh_convert(t)
-    return t
