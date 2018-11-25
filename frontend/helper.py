@@ -312,6 +312,6 @@ def title_filter(titles):
     normalized = [title_normalize(t) for t in titles]
     r = []
     for t in normalized:
-        if not (_sub_titles[t] & set(normalized)):
+        if t and not (_sub_titles[t] & set(normalized)):
             r.append(t)
     return r

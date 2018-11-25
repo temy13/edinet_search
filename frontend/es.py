@@ -10,16 +10,47 @@ SIZE = 10
 def normal_search(_bool, offset):
     es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
     body_ = {
-	"from":offset,
+	"from":0,
+	#"from":offset,
 	"size":SIZE,
 	"query": {
 	  "bool":_bool
-	}
+	},
+
+        "aggs": {
+          "top_tags": {
+            "terms": {
+                "field": "filename",
+                "size": 100000
+            },
+            "aggs": {
+                "top_result_hits": {
+                    "top_hits": {
+                        "sort": [
+                            {
+                                "term": {
+                                    "order": "desc"
+                                }
+                            }
+                        ],
+                        "_source": {
+                            "includes": [ "id","title","term","publisher","term_date_range","value" ]
+                        },
+                        "size" : 1
+                    }
+                }
+            }
+         }
+      }
+        
     }
     d = es.search(index=conf["index"], body=body_)
-    result = d["hits"]["hits"]
-    count = d["hits"]["total"]
-    return count, result
+    print(d["hits"]["total"], sum([x["doc_count"] for x in d['aggregations']['top_tags']['buckets']]))
+    hits = [x['top_result_hits']['hits']['hits'][0] for x in d['aggregations']['top_tags']['buckets']]
+    result = hits#d["hits"]["hits"]
+    count = len(hits)#d["hits"]["total"]
+    #return count, result
+    return count, result[offset:offset+SIZE]
 
 def scroll_search(_bool, offset):
     es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
@@ -77,7 +108,7 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
     if titles:
        filters.append({
         "terms": {
-            "key": titles
+            "title": titles
         }})
        #_bool["should"] = shoulds
        #_bool["minimum_should_match"] = 1
@@ -89,7 +120,7 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
     result = [{
 	"value":row["_source"]["value"], "publisher":row["_source"]["publisher"], "term":row["_source"]["term"], 
 	"term_from":row["_source"]["term_date_range"]["gte"], "term_to":row["_source"]["term_date_range"]["lte"],
-        "key":row["_source"]["key"]
+        "title":row["_source"]["title"]
                  # "title1":row["_source"]["title1"], "title2":row["_source"]["title2"], "title3":row["_source"]["title3"], "title4":row["_source"]["title4"], "title5":row["_source"]["title5"]
 	} for row in result]
     return count, result

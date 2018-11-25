@@ -9,6 +9,7 @@ conf = {"host": "127.0.0.1", "port": 9200,
 import etl
 import uuid
 from helper import *
+import helper
 es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
 n = 0
 LIMIT = 1000
@@ -23,7 +24,7 @@ def ex_parse(html, fn):
         t_idx = div.find("</h")
         t = div[:t_idx]
         t_v = title_normalize(t)
-        if t_v in _titles:
+        if t_v in helper._titles:
             titles.append(t)
     titles.append("監査報告書")
     html = etl.extract_html(html)
@@ -56,12 +57,13 @@ def ex_parse(html, fn):
 def insert_to_es(fn):
      data = db.get_data_by_fn(fn)
      if not data:
-         continue
+         #continue
+         return
      ex_parse(data[0]["origin"], fn)
 
 
 def connection(data, k):
-    targets = [k] + _titles_sub[k]
+    targets = [k] + helper._titles_sub[k]
     return "".join([data[t] for t in targets if t in data])
 
 
@@ -72,9 +74,10 @@ def insert_es(data, fn):
         row = db.get_meta(fn)
         d = {
 	   "value":v,
-	   "key":k,
+	   "title":k,
 	   "term":row["term"],
-	   "publisher":row["publisher"],
+	   "publisher":etl.parse(row["publisher"]),
+           "filename":fn,
 	   "term_date_range": {
 	     "gte":row["term_from"],
 	     "lte":row["term_to"]
@@ -85,4 +88,4 @@ def insert_es(data, fn):
         #db.insert_target(code="", filename=fn, value=d["value"], key=d["key"], term=d["term"], term_from=row["term_from"], term_to=row["term_to"], publisher=row["publisher"])
     helpers.bulk(client=es,actions=datas,refresh=True,chunk_size=1000,request_timeout=150)
     print("inserted", len(datas) )
-main()
+#main()

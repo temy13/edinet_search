@@ -36,7 +36,11 @@
           "type": "keyword",
           "null_value": "NULL"
         },
-        "key": {
+        "title": {
+          "type": "keyword",
+          "null_value": "NULL"
+        },
+        "filename": {
           "type": "keyword",
           "null_value": "NULL"
         },
