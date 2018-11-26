@@ -24,9 +24,10 @@ def dt_convert(tdatetime):
     return tdatetime
 
 app_log = logging.getLogger("tornado.application")
-def search(query, offset=0, length=300, t_from="", t_to="", titles=[]):
+def search(query, offset=0, length=300, t_from="", t_to="", titles=[], title_indexes=[]):
     #titles = title_filter(titles)
-    count, data = es.search(query, offset=offset, t_from=t_from, t_to=t_to, titles=titles)
+    #title_indexes.extend()
+    count, data = es.search(query, offset=offset, t_from=t_from, t_to=t_to, title_indexes=title_indexes)
     rdata = []
     for d in data:
         dx = {}
@@ -73,13 +74,13 @@ class MainHandler(tornado.web.RequestHandler):
 
             t_from = dt_query_convert(t_from_year, t_from_month, True)
             t_to = dt_query_convert(t_to_year, t_to_month, False)
-            titles = []#[title_normalize(k) for k in TITLES]
-            q_titles = [{"name":k, "value":title_normalize(k), "checked":None} for k in TITLES]
+            title_indexes = []#[title_normalize(k) for k in TITLES]
+            q_titles = [{"name":k, "value":i, "checked":None} for i, k in enumerate(TITLES)]
             if 'titles' in self.request.arguments:
-                titles = [x.decode('utf-8') for x in self.request.arguments['titles']]
-                q_titles = [{"name":k, "value":title_normalize(k), "checked":("checked" if title_normalize(k) in titles else None)} for k in TITLES]
+                title_indexes = [x for x in self.request.arguments['title_indexes']]
+                q_titles = [{"name":k, "value":i, "checked":("checked" if i in title_indexes else None)} for i, k in enumerate(TITLES)]
             if query or t_from or t_to:
-                count, data = search(query, offset=offset, length=int(length), t_from=t_from, t_to=t_to, titles=titles)
+                count, data = search(query, offset=offset, length=int(length), t_from=t_from, t_to=t_to, title_indexes=title_indexes)
             else:
                 count = 0
                 data = []
@@ -93,11 +94,11 @@ class MainHandler(tornado.web.RequestHandler):
                 t_from_year=t_from_year,
                 t_to_year=t_to_year,
                 length=int(length),
-                candidates=q_titles
+                q_titles=q_titles
             )
         except:
             print(traceback.format_exc())
-            self.render('index.html', count=0, data=[], query="",offset=0, t_from_month="", t_to_month="",t_from_year="", t_to_year="", length=300, candidates=[{"name":k, "value":title_normalize(k), "checked":None} for k in TITLES])
+            self.render('index.html', count=0, data=[], query="",offset=0, t_from_month="", t_to_month="",t_from_year="", t_to_year="", length=300, q_titles=[{"name":k, "value":i, "checked":None} for i, k in enumerate(TITLES)])
 
     # def post(self):
     #     try:

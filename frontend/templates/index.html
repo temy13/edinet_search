@@ -46,9 +46,9 @@
                   </div>
                 </div>
 
-                {% for d in candidates %}
+                {% for d in q_titles %}
                   <div>
-                    {{d["name"]}}<input name="titles" type="checkbox" value="{{d['value']}}" {{d['checked']}}>
+                    {{d["name"]}}<input name="title_indexes" type="checkbox" value="{{d['value']}}" {{d['checked']}}>
                   </div>
                 {% end %}
               </div>
@@ -78,7 +78,7 @@
                   <a class="page-link">{{ int((i/10) + 1) }}</a>
                 {% else %}
                   <a class="page-link" href="/?query={{query}}&offset={{i}}&t_from_year={{t_from_year}}&t_from_month={{t_from_month}}&t_to_year={{t_to_year}}&t_to_month={{t_to_month}}
-                  &titles={{'&titles='.join([d['value'] for d in candidates if d['checked']]) }}">{{ int((i/10) + 1) }}</a>
+                  &title_indexes={{'&title_indexes='.join([d['value'] for d in q_titles if d['checked']]) }}">{{ int((i/10) + 1) }}</a>
                 {% end %}
               </li>
             {% end %}

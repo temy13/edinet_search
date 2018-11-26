@@ -77,7 +77,7 @@ def scroll_search(_bool, offset):
 
 
 
-def search(query, t_from="", t_to="", offset=0, titles=[]):
+def search(query, t_from="", t_to="", offset=0, titles=[], title_indexes=[]):
     t_from = "1980/01/01" if not t_from else t_from
     t_to = "2030/12/31" if not t_to else t_to
     q_titles = str(tuple(titles)).replace(',)',')')
@@ -107,8 +107,8 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
        }
     }
     ]
-    if titles:
-       idx = helper.get_es_indexes(titles)
+    if title_indexes:
+       idx = helper.get_es_indexes(titles) + title_indexes
        indexes = copy.deepcopy(idx)
        for i in idx:
            indexes.extend(helper.TITLES_SUB_INDEXES[i])
