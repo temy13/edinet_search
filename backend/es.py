@@ -28,11 +28,11 @@ def ex_parse(html, fn):
         if t_v in helper._titles:
             titles.append(title)
     if title_normalize(titles[0]) != "表紙":
-      if html.find("【表紙】") >= 0: 
+      if html.find("【表紙】") >= 0:
         titles.insert(0, "【表紙】")
 
-    titles.append("監査報告書")
-    #titles.append("独立監査人の監査報告書")
+    titles.append("独立監査人の監査報告書")
+    #titles.append("独立監査人の独立監査人の監査報告書")
     html = etl.extract_html(html)
     text = etl.parse(html)
     d = {}
@@ -109,6 +109,5 @@ def main():
             continue
         ex_parse(data[0]["origin"], fn)
     print("----")
-print(es_title_index("監査報告書"))
+print(es_title_index("独立監査人の監査報告書"))
 main()
-
