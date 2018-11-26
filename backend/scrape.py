@@ -59,20 +59,20 @@ def download(code):
 if __name__ == '__main__':
     print("start")
     df = get_codes()
-    for index, item in df[:4].iterrows():
+    for index, item in df.iterrows():
         code = item["code"]
         print(code)
         ###filenames = db.get_filenames(code)
-        #download(code)
+        download(code)
         for fn in glob("backend/data/%s/*.zip" % code):
         ###for fn in filenames:
             try:  
                 ###if fn in filenames:
                 ###   continue
-                #items, values= etl.extract(fn, code)
-                #db.save_items(fn, code, items)
-                #db.save_values(fn, code, values)
-                #meta.save_meta(fn)
+                items, values= etl.extract(fn, code)
+                db.save_items(fn, code, items)
+                db.save_values(fn, code, values)
+                meta.save_meta(fn)
                 es.insert_to_es(fn)
             except:
                 print(traceback.format_exc())

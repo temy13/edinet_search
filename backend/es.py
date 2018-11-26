@@ -52,10 +52,9 @@ def ex_parse(html, fn):
           d[i] = subtext
     f_idx = text.find(titles[-1])
     subtext = text[f_idx:-1]
+    d[es_title_index(titles[-1])] = subtext
     if not subtext:
       print(titles[n], f_idx, len(text))
-    print(titles)
-    d[es_title_index(titles[-1])] = subtext
     insert_es(d, fn)
 
 
@@ -106,7 +105,7 @@ def insert_es(data, fn):
 def main():
 
     #filenames = db.get_all_filenames()
-    filenames = {'backend/data/E14273/Xbrl_Search_20181125_214518.zip', 'backend/data/E14273/Xbrl_Search_20181125_214506.zip', 'backend/data/E14273/Xbrl_Search_20181125_214543.zip'}
+    filenames = {'backend/data/E14273/Xbrl_Search_20181125_214543.zip', 'backend/data/E14273/Xbrl_Search_20181125_214518.zip'}
     for fn in filenames:
         data = db.get_data_by_fn(fn)
         if not data:

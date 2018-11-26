@@ -5,7 +5,7 @@ import helper
 conf = {"host": "127.0.0.1", "port": 9200,
          "index": "edinet", "doc_type": "edinet"}
 import copy
-SIZE = 100
+SIZE = 10
 
 def normal_search(_bool, offset):
     es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
@@ -114,7 +114,7 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
            indexes.extend(helper.TITLES_SUB_INDEXES[i])
        filters.append({
         "terms": {
-            "title_index": [str(i) for i in idx]
+            "title_index": [str(i) for i in indexes]
         }})
        #_bool["should"] = shoulds
        #_bool["minimum_should_match"] = 1
