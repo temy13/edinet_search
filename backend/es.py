@@ -31,14 +31,16 @@ def ex_parse(html, fn):
       if html.find("【表紙】") >= 0:
         titles.insert(0, "【表紙】")
 
-    titles.append("独立監査人の監査報告書")
-    #titles.append("独立監査人の独立監査人の監査報告書")
+    #titles.append("独立監査人の監査報告書")
+    #titles.append("独立監査人")
     html = etl.extract_html(html)
     text = etl.parse(html)
     d = {}
+    f_idx = 0
+    t_idx = 0
     for n in range(len(titles)-1):
-        f_idx = text.find(etl.parse(titles[n]))
-        t_idx = text.find(etl.parse(titles[n+1]))
+        f_idx = text.find(etl.parse(titles[n]), t_idx)
+        t_idx = text.find(etl.parse(titles[n+1]), f_idx)
         subtext = text[f_idx:t_idx]
         if not subtext:
           print(titles[n], f_idx, t_idx)
@@ -50,8 +52,10 @@ def ex_parse(html, fn):
           d[i] = subtext
     f_idx = text.find(titles[-1])
     subtext = text[f_idx:-1]
+    if not subtext:
+      print(titles[n], f_idx, len(text))
+    print(titles)
     d[es_title_index(titles[-1])] = subtext
-    print(len(titles))
     insert_es(d, fn)
 
 
@@ -91,23 +95,22 @@ def insert_es(data, fn):
 	      }
         }
         if not v:
-          print(i, k)
+          print("NOV", i, k, fn)
         _id = uuid.uuid1()
         datas.append({'_id':_id.int, '_op_type':'create','_index':conf["index"],'_type':conf["doc_type"],'_source':d})
         #db.insert_target(code="", filename=fn, value=d["value"], key=d["key"], term=d["term"], term_from=row["term_from"], term_to=row["term_to"], publisher=row["publisher"])
     helpers.bulk(client=es,actions=datas,refresh=True,chunk_size=1000,request_timeout=150)
-    print("inserted", len(datas) )
 
 
 
 def main():
 
-    filenames = db.get_all_filenames()
+    #filenames = db.get_all_filenames()
+    filenames = {'backend/data/E14273/Xbrl_Search_20181125_214518.zip', 'backend/data/E14273/Xbrl_Search_20181125_214506.zip', 'backend/data/E14273/Xbrl_Search_20181125_214543.zip'}
     for fn in filenames:
         data = db.get_data_by_fn(fn)
         if not data:
             continue
         ex_parse(data[0]["origin"], fn)
     print("----")
-print(es_title_index("独立監査人の監査報告書"))
 main()

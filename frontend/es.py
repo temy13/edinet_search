@@ -5,7 +5,7 @@ import helper
 conf = {"host": "127.0.0.1", "port": 9200,
          "index": "edinet", "doc_type": "edinet"}
  
-SIZE = 10
+SIZE = 100
 
 def normal_search(_bool, offset):
     es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
@@ -44,7 +44,6 @@ def normal_search(_bool, offset):
       }
         
     }
-    print(_bool)
     d = es.search(index=conf["index"], body=body_)
     print(d["hits"]["total"], sum([x["doc_count"] for x in d['aggregations']['top_tags']['buckets']]))
     hits = [x['top_result_hits']['hits']['hits'][0] for x in d['aggregations']['top_tags']['buckets']]
@@ -108,13 +107,13 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
        }
     }
     ]
-    #if titles:
-    #   idx = helper.get_es_indexes(titles)
-    #   print(titles, idx)
-    #   filters.append({
-    #    "terms": {
-    #        "title_index": [str(i) for i in idx]
-    #    }})
+    if titles:
+       idx = helper.get_es_indexes(titles)
+       print(titles, idx)
+       filters.append({
+        "terms": {
+            "title_index": [str(i) for i in idx]
+        }})
        #_bool["should"] = shoulds
        #_bool["minimum_should_match"] = 1
     _bool = {"filter":filters}

@@ -75,7 +75,8 @@ TITLES = [
     "純資産額計算書",
     "第６ 販売及び買戻しの実績",
     "第７ 参考情報",
-    "独立監査人の監査報告書"
+    "独立監査人"
+    #"独立監査人の監査報告書"
 ]
 
 
@@ -274,7 +275,8 @@ TITLES_SUB = {
     "純資産額計算書":[],
     "第６ 販売及び買戻しの実績":[],
     "第７ 参考情報":[],
-    "独立監査人の監査報告書":[]
+    "独立監査人":[]
+    #"独立監査人の監査報告書":[]
 }
 
 z_digit = ["０", "１", "２", "３", "４","５", "６", "７", "８", "９", "１０"]
@@ -310,7 +312,8 @@ for k, v in _titles_sub.items():
 
 def title_filter(titles):
     if not titles:
-        return [title_normalize(t) for t in ["表紙","第一部 ファンド情報","第二部 投資法人の詳細情報", "独立監査人の監査報告書"]]
+        return [title_normalize(t) for t in ["表紙","第一部 ファンド情報","第二部 投資法人の詳細情報", "独立監査人"]]
+        #return [title_normalize(t) for t in ["表紙","第一部 ファンド情報","第二部 投資法人の詳細情報", "独立監査人の監査報告書"]]
     normalized = [title_normalize(t) for t in titles]
     r = []
     for t in normalized:
