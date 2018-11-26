@@ -111,7 +111,8 @@ _titles = [title_normalize(k) for k in TITLES]
 
 def title_filter(titles):
     if not titles:
-        return [title_normalize(t) for t in ["表紙","第一部 ファンド情報","第二部 投資法人の詳細情報", "独立監査人の監査報告書"]]
+        return [title_normalize(t) for t in ["表紙","第一部 ファンド情報","第二部 投資法人の詳細情報", "独立監査人"]]
+        #return [title_normalize(t) for t in ["表紙","第一部 ファンド情報","第二部 投資法人の詳細情報", "独立監査人の監査報告書"]]
     normalized = [title_normalize(t) for t in titles]
     r = []
     for t in normalized:
