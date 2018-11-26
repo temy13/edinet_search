@@ -67,16 +67,16 @@ def insert_to_es(fn):
      ex_parse(data[0]["origin"], fn)
 
 
-def connection(data, k):
-    target_titles = [k] + helper._titles_sub[k]
-    return "".join([data[es_title_index(t)] for t in target_titles if es_title_index(t) in data])
+def connection(data, i):
+    target_title_indexes = [i] + helper.TITLES_SUB_INDEXES[i]
+    return "".join([data[idx] for idx in target_title_indexes if idx in data])
 
 
 def insert_es(data, fn):
     datas = []
     for i,v in data.items():
         k = get_title_from_index(i)
-        v = connection(data, k)
+        v = connection(data, i)
         row = db.get_meta(fn)
         d = {
 	   "value":v,
