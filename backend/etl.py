@@ -42,8 +42,9 @@ def extract_html(html):
 
 def extract(fn, code):
     dir = fn.replace("zip","")
-    #with zipfile.ZipFile(fn) as existing_zip:
-    #    existing_zip.extractall(dir)
+    print(fn)
+    with zipfile.ZipFile(fn) as existing_zip:
+        existing_zip.extractall(dir)
     items = []
     values = []
     return extract_dir(dir, items, values)

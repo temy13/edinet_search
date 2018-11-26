@@ -290,7 +290,10 @@ def zh_convert(s):
         s = s.replace(m, mh_digit[m])
     return s
 
+
 def title_normalize(t):
+    #特殊文字
+    t = re.sub("&#[\d]+;", "", t)
     t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
     t = zh_convert(t)
     return t
@@ -298,3 +301,12 @@ def title_normalize(t):
 
 _titles = [title_normalize(k) for k in TITLES]
 _titles_sub = {title_normalize(k):[title_normalize(x) for x in v] for k, v  in TITLES_SUB.items()}
+
+
+def es_title_index(t, c=0):
+    t = title_normalize(t)
+    indexes = [i for i, x in enumerate(_titles) if x == t]
+    return indexes[c]
+
+def get_title_from_index(i):
+    return _titles[i]

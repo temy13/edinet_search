@@ -1,7 +1,7 @@
 from elasticsearch import Elasticsearch, helpers
 from pprint import pprint
 import json
-
+import helper
 conf = {"host": "127.0.0.1", "port": 9200,
          "index": "edinet", "doc_type": "edinet"}
  
@@ -34,7 +34,7 @@ def normal_search(_bool, offset):
                             }
                         ],
                         "_source": {
-                            "includes": [ "id","title","term","publisher","term_date_range","value" ]
+                            "includes": [ "filename","id","title_index","term","publisher","term_date_range","value" ]
                         },
                         "size" : 1
                     }
@@ -44,6 +44,7 @@ def normal_search(_bool, offset):
       }
         
     }
+    print(_bool)
     d = es.search(index=conf["index"], body=body_)
     print(d["hits"]["total"], sum([x["doc_count"] for x in d['aggregations']['top_tags']['buckets']]))
     hits = [x['top_result_hits']['hits']['hits'][0] for x in d['aggregations']['top_tags']['buckets']]
@@ -98,18 +99,22 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
     {
     	"range": {
            "term_date_range": {
-            "gte":t_from,
-            "lte":t_to,
-	     "format": "yyyy/MM/dd"
+            
+               "gte":t_from,
+               "lte":t_to,
+	       "format": "yyyy/MM/dd",
+               "relation":"WITHIN"
           }
        }
     }
     ]
-    if titles:
-       filters.append({
-        "terms": {
-            "title": titles
-        }})
+    #if titles:
+    #   idx = helper.get_es_indexes(titles)
+    #   print(titles, idx)
+    #   filters.append({
+    #    "terms": {
+    #        "title_index": [str(i) for i in idx]
+    #    }})
        #_bool["should"] = shoulds
        #_bool["minimum_should_match"] = 1
     _bool = {"filter":filters}
@@ -120,7 +125,8 @@ def search(query, t_from="", t_to="", offset=0, titles=[]):
     result = [{
 	"value":row["_source"]["value"], "publisher":row["_source"]["publisher"], "term":row["_source"]["term"], 
 	"term_from":row["_source"]["term_date_range"]["gte"], "term_to":row["_source"]["term_date_range"]["lte"],
-        "title":row["_source"]["title"]
+        "title_index":row["_source"]["title_index"],
+        "filename":row["_source"]["filename"]
                  # "title1":row["_source"]["title1"], "title2":row["_source"]["title2"], "title3":row["_source"]["title3"], "title4":row["_source"]["title4"], "title5":row["_source"]["title5"]
 	} for row in result]
     return count, result

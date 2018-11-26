@@ -27,7 +27,6 @@ app_log = logging.getLogger("tornado.application")
 def search(query, offset=0, length=300, t_from="", t_to="", titles=[]):
     titles = title_filter(titles)
     count, data = es.search(query, offset=offset, t_from=t_from, t_to=t_to, titles=titles)
-    print(count, len(data))
     rdata = []
     for d in data:
         dx = {}

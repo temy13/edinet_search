@@ -291,6 +291,8 @@ def zh_convert(s):
     return s
 
 def title_normalize(t):
+    #特殊文字
+    t = re.sub("&#[\d]+;", "", t)
     t = re.sub("[ -/:-@\[-~\s【】、。．（）]", "", t)
     t = zh_convert(t)
     return t
@@ -315,3 +317,7 @@ def title_filter(titles):
         if t and not (_sub_titles[t] & set(normalized)):
             r.append(t)
     return r
+
+
+def get_es_indexes(titles):
+    return [_titles.index(t) for t in titles]

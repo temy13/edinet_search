@@ -138,3 +138,10 @@ def insert_target(code, filename, value, key, publisher, term, term_from, term_t
         conn.commit()
 
 
+def get_all_filenames():
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('SELECT filename FROM filenames')
+            rows = cur.fetchall()
+            return [row[0] for row in rows]
+

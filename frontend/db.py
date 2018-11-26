@@ -126,3 +126,11 @@ def get_targets(query, t_from="", t_to="", offset=0, titles=[]):
 #             cur.execute('SELECT publisher, term, term_from, term_to FROM meta where filename =  %s', (filename,))
 #             rows = cur.fetchall()
 #             return [{"publisher":row[0], "term":row[1], "term_from":row[2], "term_to":row[3]} for row in rows]
+
+def get_all_filenames():
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT filename FROM values WHERE title1 = 'ALL'")
+            rows = cur.fetchall()
+            return [row[0] for row in rows]
+
