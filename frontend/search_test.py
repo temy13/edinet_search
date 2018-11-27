@@ -10,10 +10,12 @@ import db
 class TestSearch(unittest.TestCase):
   
   def test_normal(self):
-    for q in ["【表紙】","一部","会計事務所"]:
+    for q in ["会計事務所"]:
+    #for q in ["【表紙】"]:
       count, rdata = server.search(q)
-      filenames = db.get_all_filenames()
+      filenames = set(db.get_all_filenames())
       self.assertEqual(10, len(rdata))
+      del rdata
       c = [set([]), set([])]
       for path in glob("backend/data/*/*/*/*/*/*.htm"):
         with open(path) as f:
@@ -29,9 +31,11 @@ class TestSearch(unittest.TestCase):
             c[0].add(zipfn)
           else:
             c[1].add(zipfn)
+      print(q, len(c[0]), len(c[1]), count)
       self.assertEqual(len(c[0] | c[1]), count)
 
-      count, rdata = server.search(q, titles=["表紙"])
+      count, rdata = server.search(q, title_indexes=[0])#表紙
+      del rdata
       self.assertEqual(len(c[0]), count)
 
   

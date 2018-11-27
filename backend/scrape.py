@@ -50,10 +50,16 @@ def download(code):
     driver = webdriver.Firefox(firefox_profile=fp,firefox_options=options)
     url = base % (code,)
     driver.get(url)
-    for ele in driver.find_elements_by_xpath('//table[@class="resultTable table_cellspacing_1 table_border_1 mb_6"]//tr/td[7]//a'):
+    #base_path = '//table[@class="resultTable table_cellspacing_1 table_border_1 mb_6"]//tr'
+    #for ele in driver.find_elements_by_xpath(base_path):
+    #    print(ele.find_element_by_xpath('/td[1]').getText())
+    # サイトの形式上click->js callゆえ名前をつけることが難しい
+    xpath = '//table[@class="resultTable table_cellspacing_1 table_border_1 mb_6"]//tr/td[7]//a'
+    for ele in driver.find_elements_by_xpath(xpath):
         time.sleep(1)
         ele.click()
     driver.close()
+    driver.quit()
 
 
 if __name__ == '__main__':
@@ -64,6 +70,7 @@ if __name__ == '__main__':
         print(code)
         ###filenames = db.get_filenames(code)
         download(code)
+        sys.exit(0)
         for fn in glob("backend/data/%s/*.zip" % code):
         ###for fn in filenames:
             try:  

@@ -1,0 +1,43 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    21  100    21    0     0     43      0 --:--:-- --:--:-- --:--:--    43
+{"acknowledged":true}  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  1144  100    65  100  1079    507   8419 --:--:-- --:--:-- --:--:--  8496
+{"acknowledged":true,"shards_acknowledged":true,"index":"edinet"}  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    68  100    21  100    47    681   1524 --:--:-- --:--:-- --:--:--  1566
+{"acknowledged":true}----
+start
+E14394
+Traceback (most recent call last):
+  File "backend/scrape.py", line 66, in <module>
+    download(code)
+  File "backend/scrape.py", line 46, in download
+    time.sleep(5)
+KeyboardInterrupt
+F.F
+======================================================================
+FAIL: test_normal (__main__.TestSearch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "frontend/search_test.py", line 16, in test_normal
+    self.assertEqual(10, len(rdata))
+AssertionError: 10 != 0
+
+======================================================================
+FAIL: test_with_dt (__main__.TestSearch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "frontend/search_test.py", line 43, in test_with_dt
+    self.assertEqual(10, len(rdata))
+AssertionError: 10 != 0
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.042s
+
+FAILED (failures=2)
+0 0
+0 0
+0 0
+0 0

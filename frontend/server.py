@@ -27,6 +27,8 @@ app_log = logging.getLogger("tornado.application")
 def search(query, offset=0, length=300, t_from="", t_to="", titles=[], title_indexes=[]):
     #titles = title_filter(titles)
     #title_indexes.extend()
+    #if not title_indexes:
+    #  title_indexes = [0,1,33,74]
     count, data = es.search(query, offset=offset, t_from=t_from, t_to=t_to, title_indexes=title_indexes)
     rdata = []
     for d in data:
@@ -76,8 +78,8 @@ class MainHandler(tornado.web.RequestHandler):
             t_to = dt_query_convert(t_to_year, t_to_month, False)
             title_indexes = []#[title_normalize(k) for k in TITLES]
             q_titles = [{"name":k, "value":i, "checked":None} for i, k in enumerate(TITLES)]
-            if 'titles' in self.request.arguments:
-                title_indexes = [x for x in self.request.arguments['title_indexes']]
+            if 'title_indexes' in self.request.arguments:
+                title_indexes = [int(x.decode("utf-8")) for x in self.request.arguments['title_indexes']]
                 q_titles = [{"name":k, "value":i, "checked":("checked" if i in title_indexes else None)} for i, k in enumerate(TITLES)]
             if query or t_from or t_to:
                 count, data = search(query, offset=offset, length=int(length), t_from=t_from, t_to=t_to, title_indexes=title_indexes)

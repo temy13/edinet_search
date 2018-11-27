@@ -13,6 +13,31 @@ es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
 n = 0
 LIMIT = 1000
 
+def g_title_indexes(titles):
+    l = [es_title_index(t) for t in titles]
+    #52番と58番は同じ値になるので特別処理
+    idxes = [i for i, x in enumerate(l) if x == 52]
+    for i in idxes:
+      if i <= 0:
+        continue
+      if 0 <= l[i-1] <= 51: l[i] = 52
+      if 52 <= l[i-1] <= 57: l[i] = 58
+    idxes = []
+    re_titles = []
+    for i in range(len(l)):
+      if i == 0 and l[i] <= l[i+1]:
+        idxes.append(l[i])
+        re_titles.append(titles[i])
+      elif i == len(l)-1 and l[i-1] < l[i]:
+        idxes.append(l[i])
+        re_titles.append(titles[i])
+      elif l[i-1] < l[i] <= l[i+1]:
+        idxes.append(l[i])
+        re_titles.append(titles[i])
+    if len(l)-len(idxes):
+      print(len(l)-len(idxes), l, len(l))
+    return re_titles, idxes
+
 
 def ex_parse(html, fn):
     #titles = re.findall("<h\d[\s\S]*?>.*?<\/h\d>", html)
@@ -38,21 +63,18 @@ def ex_parse(html, fn):
     d = {}
     f_idx = 0
     t_idx = 0
+    titles, title_indexes = g_title_indexes(titles)
     for n in range(len(titles)-1):
         f_idx = text.find(etl.parse(titles[n]), t_idx)
         t_idx = text.find(etl.parse(titles[n+1]), f_idx)
         subtext = text[f_idx:t_idx]
         if not subtext:
           print(titles[n], f_idx, t_idx)
-        i = es_title_index(titles[n])
-        if i not in d:
-          d[i] = subtext
-        else:
-          i = es_title_index(titles[n], 1)
-          d[i] = subtext
+        i = title_indexes[n]
+        d[i] = subtext
     f_idx = text.find(titles[-1])
     subtext = text[f_idx:-1]
-    d[es_title_index(titles[-1])] = subtext
+    d[title_indexes[-1]] = subtext
     if not subtext:
       print(titles[n], f_idx, len(text))
     insert_es(d, fn)
@@ -99,17 +121,17 @@ def insert_es(data, fn):
         datas.append({'_id':_id.int, '_op_type':'create','_index':conf["index"],'_type':conf["doc_type"],'_source':d})
         #db.insert_target(code="", filename=fn, value=d["value"], key=d["key"], term=d["term"], term_from=row["term_from"], term_to=row["term_to"], publisher=row["publisher"])
     helpers.bulk(client=es,actions=datas,refresh=True,chunk_size=1000,request_timeout=150)
-
+    #print("inserted", len(data))
 
 
 def main():
 
-    #filenames = db.get_all_filenames()
-    filenames = {'backend/data/E14273/Xbrl_Search_20181125_214543.zip', 'backend/data/E14273/Xbrl_Search_20181125_214518.zip'}
-    for fn in filenames:
+    filenames = db.get_all_filenames()
+    for i, fn in enumerate(filenames):
+        print("%s/%s" % (i, len(filenames)),end="\r")
         data = db.get_data_by_fn(fn)
         if not data:
             continue
         ex_parse(data[0]["origin"], fn)
     print("----")
-main()
+#main()

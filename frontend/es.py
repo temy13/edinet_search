@@ -8,7 +8,7 @@ import copy
 SIZE = 10
 
 def normal_search(_bool, offset):
-    es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]))
+    es = Elasticsearch("{}:{}".format(conf["host"], conf["port"]), retry_on_timeout=True)
     body_ = {
 	"from":0,
 	#"from":offset,
